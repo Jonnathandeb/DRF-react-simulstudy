@@ -1,6 +1,18 @@
 import React from 'react';
 import { Switch, Route, Redirect } from "react-router-dom";
 import './App.css';
+import { HomePage } from "./pages/Home"
+import { OtherProfilePage } from "./pages/OtherProfile"
+import { SelfProfilePage } from "./pages/SelfProfile"
+import { FeedPage } from "./pages/Feed"
+import { FeedClassPage } from "./pages/FeedClass"
+import { FeedAllPage } from "./pages/FeedAll"
+import { MakePostPage } from "./pages/MakePost"
+import { LoginPage } from "./pages/Login"
+import { RegisterPage } from "./pages/Register"
+import { LeaderboardPage } from "./pages/Leaderboard"
+import { Search } from "./pages/Search"
+import { Footer } from "./components/Footer"
 
 function App() {
   return (
