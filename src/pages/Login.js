@@ -1,9 +1,11 @@
-import React, { Component } from 'react';
+import React from "react";
+import SchoolSearch from "../components/SchoolSearch";
 
-export class LoginPage extends Component {
-    render() {
-        return (
-            <div>Login Page</div>
-        );
-    }
+
+export class LoginPage extends React.Component {
+  render() {
+    return (
+		<SchoolSearch />
+    )
+  }
 }
