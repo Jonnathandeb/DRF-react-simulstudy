@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import _ from 'lodash'
 import React, { Component } from 'react'
-import { Search, Label } from 'semantic-ui-react'
+import { Search, Label, Form } from 'semantic-ui-react'
 
 const resultRenderer = ({ name }) => <Label content={name} />
 
@@ -14,9 +14,12 @@ const initialState = { isLoading: false, results: [], value: '' }
 export default class SchoolSearch extends Component {
   state = initialState
 
-  handleResultSelect = (e, { result }) => this.setState({ value: result.domain })
+  handleResultSelect = (e, { result }) => this.setState({ value: result.name })
 
   handleSearchChange = (e, { value }) => {
+    if (this.props.otherChangeFunction)
+        this.props.otherChangeFunction(e);
+
 	this.setState({ isLoading: true, value })
 	
 	fetch('http://localhost:8000/schools/')
@@ -47,7 +50,7 @@ export default class SchoolSearch extends Component {
 		results={results}
 		value={value}
 		resultRenderer={resultRenderer}
-		placeholder={"Your School"}
+        placeholder={"Your School"}
 		{...this.props}
 		/>
     )
