@@ -6,7 +6,7 @@ import { OtherProfilePage } from "./pages/OtherProfile"
 import { SelfProfilePage } from "./pages/SelfProfile"
 import { FeedPage } from "./pages/Feed"
 import { FeedClassPage } from "./pages/FeedClass"
-import { FeedAllPage } from "./pages/FeedAll"
+import { PostIdPage } from "./pages/PostId"
 import { MakePostPage } from "./pages/MakePost"
 import { LoginPage } from "./pages/Login"
 import { RegisterPage } from "./pages/Register"
@@ -53,8 +53,8 @@ function App() {
           <Route  
             path="/post/:id" 
             render={matchProps => (
-              <FeedAllPage {...matchProps} />
-            )} 
+              <PostIdPage {...matchProps} />
+            )}
           />
           <Route  
             path="/post" 
