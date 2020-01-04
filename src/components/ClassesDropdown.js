@@ -60,7 +60,7 @@ export default class ClassesDropdown extends Component {
         return (
             <Dropdown item text="Classes" simple>
                 <Dropdown.Menu>
-                    {dropdownArr.map((e) => e)}
+                    {dropdownArr}
                 </Dropdown.Menu>
             </Dropdown>
         );
