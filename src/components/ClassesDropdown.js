@@ -46,10 +46,17 @@ export default class ClassesDropdown extends Component {
     render() {
         let dropdownArr = [<Dropdown.Item key="loading">Loading ...</Dropdown.Item>];
         if (!this.state.isLoading) {
-            dropdownArr = [];
+            dropdownArr = [<Dropdown.Item key={0}>
+                <Link to="/feed">
+                    All Classes
+                </Link>
+            </Dropdown.Item>];
             for (let i = 0; i < this.state.data.length; i++) {
-                dropdownArr.push(<Dropdown.Item key={i}>
-                    <Link to={this.state.data[i].url}>
+                let classUrl = this.state.data[i].url
+                classUrl = classUrl.slice(classUrl.indexOf("/classes/") + 9);
+
+                dropdownArr.push(<Dropdown.Item key={i + 1}>
+                    <Link to={`/feed/${classUrl}`}>
                         {this.state.data[i].name}
                     </Link>
                 </Dropdown.Item>)
