@@ -12,16 +12,16 @@ export default class ReadableTime extends Component {
         let seconds = totalSeconds % 60;
 
         if (days) {
-            return <div>About {days} days(s) ago</div>
+            return <span>About {days} days(s) ago</span>
         }
         else if (hours) {
-            return <div>About {hours} hour(s) ago</div>
+            return <span>About {hours} hour(s) ago</span>
         }
         else if (minutes) {
-            return <div>About {minutes} minute(s) ago</div>
+            return <span>About {minutes} minute(s) ago</span>
         }
         else {
-            return <div>About {seconds} second(s) ago</div>
+            return <span>About {seconds} second(s) ago</span>
         }
     }
 }

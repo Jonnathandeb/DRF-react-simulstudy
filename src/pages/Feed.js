@@ -1,11 +1,12 @@
-import React, { Component } from 'react';
-import { Menu, Input, Card } from 'semantic-ui-react';
+import React, { Component, createRef } from 'react';
+import { Menu, Input, Card, Sticky } from 'semantic-ui-react';
 import { Link } from "react-router-dom";
 import ClassesDropdown from '../components/ClassesDropdown';
 import PostCard from "../components/PostCard"
 
 export class FeedPage extends Component {
     state = { isLoading: true }
+    contextRef = createRef()
 
     loadPosts() {
         this.setState({ isLoading: true, })
@@ -30,32 +31,34 @@ export class FeedPage extends Component {
         }
 
         return (
-            <div>
-                <Menu stackable>
-                    <Menu.Item>
-                        <img src='/SS_logo.png' alt="Simulstudy Logo" />
-                    </Menu.Item>
-                    <Menu.Item
-                        as={Link}
-                        to="/"
-                        name='home'
-                    />
-                    <ClassesDropdown id="5" active={true} />
-                    <Menu.Item
-                        as={Link}
-                        to="/profile"
-                        name='profile'
-                    />
-                    <Menu.Item
-                        as={Link}
-                        to="/leaderboard"
-                        name='leaderboard'
-                    />
-                    <Menu.Item>
-                        <Input className='icon' placeholder='Search...' action="search"/>
-                    </Menu.Item>
-                </Menu>
-                <Card.Group itemsPerRow={4} stackable>
+            <div ref={this.contextRef}>
+                <Sticky context={this.contextRef}>
+                    <Menu stackable>
+                        <Menu.Item>
+                            <img src='/SS_logo.png' alt="Simulstudy Logo" />
+                        </Menu.Item>
+                        <Menu.Item
+                            as={Link}
+                            to="/"
+                            name='home'
+                        />
+                        <ClassesDropdown id="5" active={true} />
+                        <Menu.Item
+                            as={Link}
+                            to="/profile"
+                            name='profile'
+                        />
+                        <Menu.Item
+                            as={Link}
+                            to="/leaderboard"
+                            name='leaderboard'
+                        />
+                        <Menu.Item>
+                            <Input className='icon' placeholder='Search...' action="search"/>
+                        </Menu.Item>
+                    </Menu>
+                </Sticky>
+                <Card.Group itemsPerRow={1} stackable>
                     {posts}
                 </Card.Group>
             </div>
