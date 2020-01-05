@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import { Card, Dimmer, Loader, Image, Icon } from 'semantic-ui-react'
 import { Link } from "react-router-dom";
+import ReadableTime from "./ReadableTime"
 
 export default class PostCard extends Component {
     state = {
@@ -123,6 +124,8 @@ export default class PostCard extends Component {
                     <br />
                     <Icon name='comment' />
                     {post.comment_count} Comment(s)
+                    <br />
+                    <ReadableTime seconds={post.time_from_now} />
                 </Card.Content>
             </Card>
         )
