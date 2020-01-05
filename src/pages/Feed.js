@@ -1,16 +1,33 @@
 import React, { Component } from 'react';
-import { Menu, Input } from 'semantic-ui-react';
+import { Menu, Input, Card } from 'semantic-ui-react';
 import { Link } from "react-router-dom";
 import ClassesDropdown from '../components/ClassesDropdown';
 import PostCard from "../components/PostCard"
 
 export class FeedPage extends Component {
-    state = { activeItem: 'Classes' }
+    state = { isLoading: true }
 
-    handleItemClick = (e, { name }) => this.setState({ activeItem: name })
+    loadPosts() {
+        this.setState({ isLoading: true, })
+
+        fetch(`http://localhost:8000/posts_for_user/?user_id=${5}`)
+        .then(res => res.json())
+        .then((data) => {
+            this.setState({isLoading: false, data: data})
+        })
+    }
+
+    componentDidMount() {
+        this.loadPosts()
+    }
 
     render() {
-        const { activeItem } = this.state
+        let posts = [];
+        if (!this.state.isLoading) {
+            for (let i = 0; i < this.state.data.length; i++) {
+                posts.push(<PostCard url={this.state.data[i].url} />)
+            }
+        }
 
         return (
             <div>
@@ -22,29 +39,25 @@ export class FeedPage extends Component {
                         as={Link}
                         to="/"
                         name='home'
-                        active={activeItem === 'home'}
-                        onClick={this.handleItemClick}
                     />
                     <ClassesDropdown id="5" active={true} />
                     <Menu.Item
                         as={Link}
                         to="/profile"
                         name='profile'
-                        active={activeItem === 'profile'}
-                        onClick={this.handleItemClick}
                     />
                     <Menu.Item
                         as={Link}
                         to="/leaderboard"
                         name='leaderboard'
-                        active={activeItem === 'leaderboard'}
-                        onClick={this.handleItemClick}
                     />
                     <Menu.Item>
                         <Input className='icon' placeholder='Search...' action="search"/>
                     </Menu.Item>
                 </Menu>
-                <PostCard url="http://localhost:8000/posts/1/"/>
+                <Card.Group>
+                    {posts}
+                </Card.Group>
             </div>
         )
     }

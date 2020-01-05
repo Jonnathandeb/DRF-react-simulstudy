@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import _ from 'lodash'
 import React, { Component } from 'react'
-import { Search, Label, Form } from 'semantic-ui-react'
+import { Search, Label } from 'semantic-ui-react'
 
 const resultRenderer = ({ name }) => <Label content={name} />
 
