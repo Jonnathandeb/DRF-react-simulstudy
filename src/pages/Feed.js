@@ -55,7 +55,7 @@ export class FeedPage extends Component {
                         <Input className='icon' placeholder='Search...' action="search"/>
                     </Menu.Item>
                 </Menu>
-                <Card.Group>
+                <Card.Group itemsPerRow={4} stackable>
                     {posts}
                 </Card.Group>
             </div>

@@ -104,7 +104,9 @@ export default class PostCard extends Component {
         return (
             <Card href="#" as={Link} to={`/post/${post.id}`} centered>
                 {cardContent}
-                <Image src={post.image_url} wrapped ui={false}/>
+                <div style={{height: "30vh", width: "100%", overflow: "hidden"}}>
+                    <Image size="medium" style={{minHeight: "100%", minWidth: "100%"}} src={post.image_url}  ui={true}/>
+                </div>
                 <Card.Content>
                     <Card.Header>{post.title}</Card.Header>
                     <Card.Meta>{post.post_class}</Card.Meta>
