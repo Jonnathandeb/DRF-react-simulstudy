@@ -38,16 +38,16 @@ function App() {
               <SelfProfilePage {...matchProps} />
             )} 
           />
+					<Route  
+            path="/feed/:id" 
+            render={matchProps => (
+              <FeedClassPage {...matchProps} />
+            )} 
+          />
           <Route  
             path="/feed" 
             render={matchProps => (
               <FeedPage {...matchProps} />
-            )} 
-          />
-          <Route  
-            path="/feed/:id" 
-            render={matchProps => (
-              <FeedClassPage {...matchProps} />
             )} 
           />
           <Route  
