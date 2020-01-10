@@ -30,7 +30,6 @@ export class RegisterPage extends Component {
 
         // if the string is empty and was not before
         if (isEmpty && !this.state.isNullArr[targetId]) {
-            console.log("is empty and was not before")
             this.setState((prevState) => {
                 let newArr = prevState.isNullArr;
                 newArr[targetId] = true;

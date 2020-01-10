@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { Comment } from 'semantic-ui-react'
+import { Comment, Dimmer, Loader } from 'semantic-ui-react'
 import { Link } from "react-router-dom";
 import ReadableTime from "./ReadableTime"
 
@@ -11,14 +11,26 @@ export default class PostComment extends Component {
 	}
 
 	loadCommentData() {
-		this.setState({ isLoading: true, })
+        this.setState({ isLoading: true, })
+        
+        let url = this.props.subComment ? `http://localhost:8000/subcomments/${this.props.id}/` : `http://localhost:8000/comments/${this.props.id}/`;
 
-		fetch(this.props.url)
+        fetch(url)
 		.then(res => res.json())
 		.then((data) => {
 			this.setState({isLoading: false, data: data})
-			this.loadUserData(this.state.data.user)
-			this.loadSubComments(this.state.data.url.slice(this.state.data.url.indexOf("/posts/") + 7, this.state.data.url.length - 1))
+            this.loadUserData(this.state.data.user)
+            if (!this.props.subComment) {
+                this.loadSubComments(`http://localhost:8000/comments_for_comment/?comment_id=${this.props.id}`)
+            }
+            else {
+                //this.loadSubComments(`http://localhost:8000/comments_for_subcomment/?comment_id=${this.props.id}`)
+                this.setState((prevState) => {
+                    let dataArr = prevState.data;
+                    dataArr.subcomments = [];
+                    return {isLoading: false, data: dataArr};
+                })
+            }
 		})
     }
     
@@ -30,38 +42,44 @@ export default class PostComment extends Component {
 		.then((data) => {
 			this.setState((prevState) => {
 				let dataArr = prevState.data;
-				dataArr.username = data.username;
-				return {isLoading: false, data: dataArr}
+                dataArr.username = data.username;
+				return {isLoading: false, data: dataArr};
 			})
 		})
-	}
+    }
+    
+    loadSubComments(url) {
+        this.setState({ isLoading: true, })
+
+		fetch(url)
+		.then(res => res.json())
+		.then((data) => {
+			this.setState((prevState) => {
+				let dataArr = prevState.data;
+                dataArr.subcomments = data;
+				return {isLoading: false, data: dataArr};
+			})
+		})
+    }
 
 	componentDidMount() {
 		this.loadCommentData()
 	}
 
-	componentWillMount() {
-		window.addEventListener('resize', this.handleWindowSizeChange);
-	}
-	  
-	// make sure to remove the listener
-	// when the component is not mounted anymore
-	componentWillUnmount() {
-		window.removeEventListener('resize', this.handleWindowSizeChange);
-	}
-	
-	handleWindowSizeChange = () => {
-		this.setState({ width: window.innerWidth });
-	};
-
 	render() {
-		let comment = {};
+        let comment = {};
+        let subcomments = [];
 		let commentContent;
-		if (!this.state.isLoading) {
-			commentContent = null;
-			comment = this.state.data;
-			comment.id = this.state.data.url.slice(this.state.data.url.indexOf("/comments/") + 10, this.state.data.url.length - 1);
-			comment.username_id = this.state.data.user.slice(this.state.data.user.indexOf("/users/") + 7);
+		if (!this.state.isLoading && this.state.data.subcomments) {
+            commentContent = null;
+            comment = this.state.data;
+            comment.username_id = this.state.data.user.slice(this.state.data.user.indexOf("/users/") + 7);
+
+            
+            for (let i = 0; i < this.state.data.subcomments.length; i++) {
+                let subcommentId = this.state.data.subcomments[i].url.slice(this.state.data.subcomments[i].url.indexOf("/subcomments/") + 13, this.state.data.subcomments[i].url.length - 1)
+                subcomments.push(<PostComment id={subcommentId} subComment={true} />)
+            }
 		}
 		else {
 			commentContent = (
@@ -71,68 +89,25 @@ export default class PostComment extends Component {
 			)
 		}
 
-		const { width } = this.state;
-		const isMobile = width <= 500;
-
-		let commentStyle;
-		if (isMobile) {
-			commentStyle = {minWidth: "95%"};
-		}
-		else {
-			commentStyle = {maxWidth: "51%"};
-		}
-
 		return (
-			<Comment.Group>
-                <Comment>
-                    <Comment.Avatar as='a' src='https://react.semantic-ui.com/images/avatar/small/christian.jpg' />
-                    <Comment.Content>
-                    <Comment.Author as={Link} to="bruh">{this.state.data.}</Comment.Author>
-                    <Comment.Metadata>
-                        <span>2 days ago</span>
-                    </Comment.Metadata>
-                    <Comment.Text>{this.}</Comment.Text>
-                    <Comment.Actions>
-                        <a>Reply</a>
-                    </Comment.Actions>
-                    </Comment.Content>
+            <Comment>
+                {commentContent}
+                <Comment.Avatar as='a' src='https://react.semantic-ui.com/images/avatar/small/christian.jpg' />
+                <Comment.Content>
+                <Comment.Author as={Link} to={`/profile/${comment.username_id}`}>{comment.username}</Comment.Author>
+                <Comment.Metadata>
+                    <ReadableTime seconds={comment.time_from_now} />
+                </Comment.Metadata>
+                <Comment.Text>{this.state.data.content}</Comment.Text>
+                <Comment.Actions>
+                    <a>Reply</a>
+                </Comment.Actions>
+                </Comment.Content>
 
-                    <Comment.Group>
-                    <Comment>
-                        <Comment.Avatar as='a' src='https://react.semantic-ui.com/images/avatar/small/elliot.jpg' />
-                        <Comment.Content>
-                        <Comment.Author as='a'>Elliot Fu</Comment.Author>
-                        <Comment.Metadata>
-                            <span>1 day ago</span>
-                        </Comment.Metadata>
-                        <Comment.Text>No, it wont</Comment.Text>
-                        <Comment.Actions>
-                            <a>Reply</a>
-                        </Comment.Actions>
-                        </Comment.Content>
-
-                        <Comment.Group>
-                        <Comment>
-                            <Comment.Avatar
-                            as='a'
-                            src='https://react.semantic-ui.com/images/avatar/small/jenny.jpg'
-                            />
-                            <Comment.Content>
-                            <Comment.Author as='a'>Jenny Hess</Comment.Author>
-                            <Comment.Metadata>
-                                <span>20 minutes ago</span>
-                            </Comment.Metadata>
-                            <Comment.Text>Maybe it would.</Comment.Text>
-                            <Comment.Actions>
-                                <a>Reply</a>
-                            </Comment.Actions>
-                            </Comment.Content>
-                        </Comment>
-                        </Comment.Group>
-                    </Comment>
-                    </Comment.Group>
-                </Comment>
-            </Comment.Group>
+                <Comment.Group>
+                    {subcomments}
+                </Comment.Group>
+            </Comment>
 		)
 	}
 }

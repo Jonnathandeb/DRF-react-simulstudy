@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import { Card, Dimmer, Loader, Image, Icon, Comment } from 'semantic-ui-react'
 import { Link } from "react-router-dom";
 import ReadableTime from "./ReadableTime"
-import PostComment from "./AllPostComment"
+import AllPostComment from "./AllPostComment"
 
 export default class PostFullScreen extends Component {
 	state = {
@@ -14,14 +14,14 @@ export default class PostFullScreen extends Component {
 	loadPostData() {
 		this.setState({ isLoading: true, })
 
-		fetch(this.props.url)
+		fetch(`http://localhost:8000/posts/${this.props.id}/`)
 		.then(res => res.json())
 		.then((data) => {
 			this.setState({isLoading: false, data: data})
 			this.loadClassName(this.state.data.post_class)
 			this.loadUserData(this.state.data.user)
-			this.loadPostLikes(this.state.data.url.slice(this.state.data.url.indexOf("/posts/") + 7, this.state.data.url.length - 1))
-			this.loadPostComments(this.state.data.url.slice(this.state.data.url.indexOf("/posts/") + 7, this.state.data.url.length - 1))
+			this.loadPostLikes(this.props.id)
+			this.loadPostComments(this.props.id)
 		})
 	}
 
@@ -152,7 +152,7 @@ export default class PostFullScreen extends Component {
                     <Icon name='comment' />
                     {post.comment_count} Comment(s)
                 </Card.Content>
-                <PostComment />
+                <AllPostComment id={this.props.id} />
             </Card>
         )
 	}
