@@ -3,41 +3,25 @@ import { Comment } from 'semantic-ui-react'
 import { Link } from "react-router-dom";
 import ReadableTime from "./ReadableTime"
 
-export default class PostComment extends Component {
+export default class AllPostComment extends Component {
 	state = {
 		isLoading: true,
 		data: [],
 		width: window.innerWidth,
 	}
 
-	loadCommentData() {
-		this.setState({ isLoading: true, })
+	loadComments() {
+        this.setState({ isLoading: true, })
 
-		fetch(this.props.url)
-		.then(res => res.json())
-		.then((data) => {
-			this.setState({isLoading: false, data: data})
-			this.loadUserData(this.state.data.user)
-			this.loadSubComments(this.state.data.url.slice(this.state.data.url.indexOf("/posts/") + 7, this.state.data.url.length - 1))
-		})
+        fetch(`http://localhost:8000/posts_for_user/?user_id=${5}`)
+        .then(res => res.json())
+        .then((data) => {
+            this.setState({isLoading: false, data: data})
+        })
     }
     
-    loadUserData(url) {
-		this.setState({ isLoading: true, })
-
-		fetch(url)
-		.then(res => res.json())
-		.then((data) => {
-			this.setState((prevState) => {
-				let dataArr = prevState.data;
-				dataArr.username = data.username;
-				return {isLoading: false, data: dataArr}
-			})
-		})
-	}
-
 	componentDidMount() {
-		this.loadCommentData()
+		this.loadComments()
 	}
 
 	componentWillMount() {
