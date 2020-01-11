@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createRef } from 'react';
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import './App.css';
 import { HomePage } from "./pages/Home"
@@ -13,80 +13,86 @@ import { RegisterPage } from "./pages/Register"
 import { LeaderboardPage } from "./pages/Leaderboard"
 import { SearchPage } from "./pages/Search"
 import { Footer } from "./components/Footer"
+import CustomNavbar from './components/CustomNavbar';
 
 function App() {
+  let contextRef = createRef()
+
   return (
     <div>
       <BrowserRouter>
-        <Switch>
-          <Route 
-            exact 
-            path="/" 
-            render={matchProps => (
-              <HomePage {...matchProps} />
-            )} 
-          />
-          <Route  
-            path="/profile/:id" 
-            render={matchProps => (
-              <OtherProfilePage {...matchProps} />
-            )} 
-          />
-          <Route  
-            path="/profile" 
-            render={matchProps => (
-              <SelfProfilePage {...matchProps} />
-            )} 
-          />
-					<Route  
-            path="/feed/:id" 
-            render={matchProps => (
-              <FeedClassPage {...matchProps} />
-            )} 
-          />
-          <Route  
-            path="/feed" 
-            render={matchProps => (
-              <FeedPage {...matchProps} />
-            )} 
-          />
-          <Route  
-            path="/post/:id" 
-            render={matchProps => (
-              <PostIdPage {...matchProps} />
-            )}
-          />
-          <Route  
-            path="/post" 
-            render={matchProps => (
-              <MakePostPage {...matchProps} />
-            )} 
-          />
-          <Route  
-            path="/login" 
-            render={matchProps => (
-              <LoginPage {...matchProps} />
-            )} 
-          />
-          <Route  
-            path="/register" 
-            render={matchProps => (
-              <RegisterPage {...matchProps} />
-            )} 
-          />
-          <Route  
-            path="/leaderboard" 
-            render={matchProps => (
-              <LeaderboardPage {...matchProps} />
-            )} 
-          />
-          <Route  
-            path="/search" 
-            render={matchProps => (
-              <SearchPage {...matchProps} />
-            )} 
-          />
-        </Switch>
+        <div ref={contextRef}>
+          <CustomNavbar />
+          <Switch>
+            <Route 
+              exact 
+              path="/" 
+              render={matchProps => (
+                <HomePage {...matchProps} />
+              )} 
+            />
+            <Route  
+              path="/profile/:id" 
+              render={matchProps => (
+                <OtherProfilePage {...matchProps} />
+              )} 
+            />
+            <Route  
+              path="/profile" 
+              render={matchProps => (
+                <SelfProfilePage {...matchProps} />
+              )} 
+            />
+            <Route  
+              path="/feed/:id" 
+              render={matchProps => (
+                <FeedClassPage {...matchProps} />
+              )} 
+            />
+            <Route  
+              path="/feed" 
+              render={matchProps => (
+                <FeedPage {...matchProps} />
+              )} 
+            />
+            <Route  
+              path="/post/:id" 
+              render={matchProps => (
+                <PostIdPage {...matchProps} />
+              )}
+            />
+            <Route  
+              path="/post" 
+              render={matchProps => (
+                <MakePostPage {...matchProps} />
+              )} 
+            />
+            <Route  
+              path="/login" 
+              render={matchProps => (
+                <LoginPage {...matchProps} />
+              )} 
+            />
+            <Route  
+              path="/register" 
+              render={matchProps => (
+                <RegisterPage {...matchProps} />
+              )} 
+            />
+            <Route  
+              path="/leaderboard" 
+              render={matchProps => (
+                <LeaderboardPage {...matchProps} />
+              )} 
+            />
+            <Route  
+              path="/search" 
+              render={matchProps => (
+                <SearchPage {...matchProps} />
+              )} 
+            />
+          </Switch>
+        </div>
       </BrowserRouter>
       <Footer/>
     </div>

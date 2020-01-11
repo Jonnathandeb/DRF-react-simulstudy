@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { Dropdown } from 'semantic-ui-react';
 
 export default class ClassesDropdown extends Component {
@@ -47,18 +47,18 @@ export default class ClassesDropdown extends Component {
         let dropdownArr = [<Dropdown.Item key="loading">Loading ...</Dropdown.Item>];
         if (!this.state.isLoading) {
             dropdownArr = [<Dropdown.Item key={0}>
-                <Link to="/feed">
+                <NavLink to="/feed">
                     All Classes
-                </Link>
+                </NavLink>
             </Dropdown.Item>];
             for (let i = 0; i < this.state.data.length; i++) {
                 let classUrl = this.state.data[i].url
                 classUrl = classUrl.slice(classUrl.indexOf("/classes/") + 9);
 
                 dropdownArr.push(<Dropdown.Item key={i + 1}>
-                    <Link to={`/feed/${classUrl}`}>
+                    <NavLink to={`/feed/${classUrl}`}>
                         {this.state.data[i].name}
-                    </Link>
+                    </NavLink>
                 </Dropdown.Item>)
             }
         }
