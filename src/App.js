@@ -1,5 +1,5 @@
 import React, { createRef } from 'react';
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import './App.css';
 import { HomePage } from "./pages/Home"
 import { OtherProfilePage } from "./pages/OtherProfile"
@@ -15,6 +15,26 @@ import { SearchPage } from "./pages/Search"
 import { Footer } from "./components/Footer"
 import CustomNavbar from './components/CustomNavbar';
 
+const AuthService = {
+  isAuthenticated: false,
+  authenticate(cb) {
+    this.isAuthenticated = true
+    setTimeout(cb, 100)
+  },
+  logout(cb) {
+    this.isAuthenticated = false
+    setTimeout(cb, 100)
+  }
+}
+
+const SecretRoute = ({ component: Component, ...rest }) => (
+  <Route {...rest} render={(props) => (
+    AuthService.isAuthenticated === true
+      ? <Component {...props} />
+      : <Redirect to='/login' />
+  )} />
+);
+
 function App() {
   let contextRef = createRef()
 
@@ -24,44 +44,44 @@ function App() {
         <div ref={contextRef}>
           <CustomNavbar />
           <Switch>
-            <Route 
+            <SecretRoute 
               exact 
               path="/" 
               render={matchProps => (
                 <HomePage {...matchProps} />
               )} 
             />
-            <Route  
+            <SecretRoute  
               path="/profile/:id" 
               render={matchProps => (
                 <OtherProfilePage {...matchProps} />
               )} 
             />
-            <Route  
+            <SecretRoute  
               path="/profile" 
               render={matchProps => (
                 <SelfProfilePage {...matchProps} />
               )} 
             />
-            <Route  
+            <SecretRoute  
               path="/feed/:id" 
               render={matchProps => (
                 <FeedClassPage {...matchProps} />
               )} 
             />
-            <Route  
+            <SecretRoute  
               path="/feed" 
               render={matchProps => (
                 <FeedPage {...matchProps} />
               )} 
             />
-            <Route  
+            <SecretRoute  
               path="/post/:id" 
               render={matchProps => (
                 <PostIdPage {...matchProps} />
               )}
             />
-            <Route  
+            <SecretRoute  
               path="/post" 
               render={matchProps => (
                 <MakePostPage {...matchProps} />
@@ -79,13 +99,13 @@ function App() {
                 <RegisterPage {...matchProps} />
               )} 
             />
-            <Route  
+            <SecretRoute  
               path="/leaderboard" 
               render={matchProps => (
                 <LeaderboardPage {...matchProps} />
               )} 
             />
-            <Route  
+            <SecretRoute  
               path="/search" 
               render={matchProps => (
                 <SearchPage {...matchProps} />

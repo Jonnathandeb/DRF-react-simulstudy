@@ -1,10 +1,9 @@
-import React, { Component, createRef } from 'react';
+import React, { Component } from 'react';
 import { Card } from 'semantic-ui-react';
 import PostCard from "../components/PostCard"
 
 export class FeedPage extends Component {
     state = { isLoading: true }
-    contextRef = createRef()
 
     loadPosts() {
         this.setState({ isLoading: true, })
