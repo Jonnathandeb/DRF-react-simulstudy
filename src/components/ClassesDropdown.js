@@ -17,9 +17,11 @@ export default class ClassesDropdown extends Component {
             let classLinks = [];
 
             // switches all classes data to the link of the class
-            classes.forEach((e) => {
-                classLinks.push(e["student_class"]);
-            })
+            if (Array.isArray(classes)) {
+                classes.forEach((e) => {
+                    classLinks.push(e["student_class"]);
+                })
+            }
 
             for (let i = 0; i < classLinks.length; i++) {
                 this.loadClassData(classLinks[i]).then((data) => {
