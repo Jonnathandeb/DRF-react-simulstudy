@@ -1,10 +1,20 @@
-import React, { Component, createRef } from 'react';
+/*import React, { Component, createRef } from 'react';
 import { Menu, Input, Sticky } from 'semantic-ui-react';
 import { NavLink } from "react-router-dom";
 import ClassesDropdown from './ClassesDropdown';
 
+import { useAuth0 } from "../react-auth0-spa";
 
-export default class CustomNavbar extends Component {
+function withAuth0Hook(Component) {
+    return function WrappedComponent(props) {
+        const auth0Value = useAuth0([]);
+        console.log(auth0Value)
+        return <Component {...props}  />;
+        // auth0Value={{isAuthenticated, loginWithRedirect, logout}}
+    }
+}
+
+class CustomNavbar extends Component {
     contextRef = createRef()
 
     render() {
@@ -34,8 +44,37 @@ export default class CustomNavbar extends Component {
                     <Menu.Item>
                         <Input className='icon' placeholder='Search...' action="search"/>
                     </Menu.Item>
+                    {!isAuthenticated && (
+                        <button onClick={() => loginWithRedirect({})}>Log in</button>
+                    )}
+
+                    {isAuthenticated && <button onClick={() => logout()}>Log out</button>}
                 </Menu>
             </Sticky>
         )
+
+        return <div>hi</div>
     }
 }
+
+CustomNavbar = withAuth0Hook(CustomNavbar)
+export default CustomNavbar;*/
+
+import React from "react";
+import { useAuth0 } from "../react-auth0-spa";
+
+const CustomNavbar = () => {
+  const { isAuthenticated, loginWithRedirect, logout } = useAuth0();
+
+  return (
+    <div>
+      {!isAuthenticated && (
+        <button onClick={() => loginWithRedirect({})}>Log in</button>
+      )}
+
+      {isAuthenticated && <button onClick={() => logout()}>Log out</button>}
+    </div>
+  );
+};
+
+export default CustomNavbar;
