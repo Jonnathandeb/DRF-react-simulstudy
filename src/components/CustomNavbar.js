@@ -43,11 +43,11 @@ class CustomNavbar extends Component {
                     <Menu.Item>
                         <Input className='icon' placeholder='Search...' action="search"/>
                     </Menu.Item>
-                    {!this.props.isAuthenticated && (
-                        <button onClick={() => this.props.loginWithRedirect({})}>Log in</button>
+                    {!this.props.auth0Value.isAuthenticated && (
+                        <button onClick={() => this.props.auth0Value.loginWithRedirect({})}>Log in</button>
                     )}
 
-                    {this.props.isAuthenticated && <button onClick={() => this.props.logout()}>Log out</button>}
+                    {this.props.auth0Value.isAuthenticated && <button onClick={() => this.props.auth0Value.props.logout()}>Log out</button>}
                 </Menu>
             </Sticky>
         )
@@ -58,22 +58,3 @@ class CustomNavbar extends Component {
 
 CustomNavbar = withAuth0Hook(CustomNavbar)
 export default CustomNavbar;
-
-/*import React from "react";
-import { useAuth0 } from "../react-auth0-spa";
-
-const CustomNavbar = () => {
-  const { this.props.isAuthenticated, this.props.loginWithRedirect, this.props.logout } = useAuth0();
-
-  return (
-    <div>
-      {!this.props.isAuthenticated && (
-        <button onClick={() => this.props.loginWithRedirect({})}>Log in</button>
-      )}
-
-      {this.props.isAuthenticated && <button onClick={() => this.props.logout()}>Log out</button>}
-    </div>
-  );
-};
-
-export default CustomNavbar;*/
