@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { NavLink } from "react-router-dom";
 import { Dropdown } from 'semantic-ui-react';
+import { getSession } from "../utils/cookie_manager"
 
 export default class ClassesDropdown extends Component {
     state = {
@@ -10,8 +11,13 @@ export default class ClassesDropdown extends Component {
 
     loadClasses() {
         this.setState({ isLoading: true, })
+        console.log(getSession().jwt)
 
-        fetch(`http://localhost:8000/membership_user/?user_id=${this.props.id}`)
+        fetch(`http://localhost:8000/membership_user/?user_id=${this.props.id}`,{
+            headers: new Headers({
+                'Authorization': 'Bearer  ' + getSession().jwt, 
+            }), 
+        })
         .then(res => res.json())
         .then((classes) => {
             let classLinks = [];
@@ -37,7 +43,11 @@ export default class ClassesDropdown extends Component {
     }
 
     loadClassData(url) {
-        return fetch(url)
+        return fetch(url, {
+            headers: new Headers({
+                'Authorization': 'Bearer  ' + getSession().jwt, 
+            }), 
+        })
         .then(res => res.json())
     }
     

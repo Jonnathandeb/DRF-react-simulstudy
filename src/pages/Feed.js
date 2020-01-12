@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Card } from 'semantic-ui-react';
 import PostCard from "../components/PostCard"
+import { getSession } from "../utils/cookie_manager"
 
 export class FeedPage extends Component {
     state = { isLoading: true }
@@ -8,7 +9,13 @@ export class FeedPage extends Component {
     loadPosts() {
         this.setState({ isLoading: true, })
 
-        fetch(`http://localhost:8000/posts_for_user/?user_id=${5}`)
+        fetch(`http://localhost:8000/posts_for_user/`,{
+            method: 'get', 
+            headers: new Headers({
+                'Authorization': 'Bearer  ' + getSession().jwt,
+            }), 
+            body: `user_id=${5}`
+        })
         .then(res => res.json())
         .then((data) => {
             this.setState({isLoading: false, data: data})
