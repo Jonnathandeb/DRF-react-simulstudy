@@ -3,6 +3,7 @@ import { Card, Dimmer, Loader, Image, Icon, Comment } from 'semantic-ui-react'
 import { Link } from "react-router-dom";
 import ReadableTime from "./ReadableTime"
 import AllPostComment from "./AllPostComment"
+import { getSession } from "../utils/cookie_manager"
 
 export default class PostFullScreen extends Component {
 	state = {
@@ -13,8 +14,11 @@ export default class PostFullScreen extends Component {
 
 	loadPostData() {
 		this.setState({ isLoading: true, })
-
-		fetch(`http://localhost:8000/posts/${this.props.id}/`)
+		fetch(`http://localhost:8000/posts/${this.props.id}/`,{
+            headers: new Headers({
+                'Authorization': 'Bearer ' + getSession().jwt,
+            }),
+        })
 		.then(res => res.json())
 		.then((data) => {
 			this.setState({isLoading: false, data: data})
@@ -28,7 +32,11 @@ export default class PostFullScreen extends Component {
 	loadClassName(url) {
 		this.setState({ isLoading: true, })
 
-		fetch(url)
+		fetch(url,{
+            headers: new Headers({
+                'Authorization': 'Bearer ' + getSession().jwt,
+            }),
+        })
 		.then(res => res.json())
 		.then((data) => {
 			this.setState((prevState) => {
@@ -42,7 +50,11 @@ export default class PostFullScreen extends Component {
 	loadUserData(url) {
 		this.setState({ isLoading: true, })
 
-		fetch(url)
+		fetch(url,{
+            headers: new Headers({
+                'Authorization': 'Bearer ' + getSession().jwt,
+            }),
+        })
 		.then(res => res.json())
 		.then((data) => {
 			this.setState((prevState) => {
@@ -56,7 +68,11 @@ export default class PostFullScreen extends Component {
 	loadPostLikes(id) {
 		this.setState({ isLoading: true, })
 
-		fetch(`http://localhost:8000/likes_for_post/?post_id=${id}`)
+		fetch(`http://localhost:8000/likes_for_post/?post_id=${id}`,{
+            headers: new Headers({
+                'Authorization': 'Bearer ' + getSession().jwt,
+            }),
+        })
 		.then(res => res.json())
 		.then((data) => {
 			this.setState((prevState) => {
@@ -70,7 +86,11 @@ export default class PostFullScreen extends Component {
 	loadPostComments(id) {
 		this.setState({ isLoading: true, })
 
-		fetch(`http://localhost:8000/comments_for_post/?post_id=${id}`)
+		fetch(`http://localhost:8000/comments_for_post/?post_id=${id}`,{
+            headers: new Headers({
+                'Authorization': 'Bearer ' + getSession().jwt,
+            }),
+        })
 		.then(res => res.json())
 		.then((data) => {
 			this.setState((prevState) => {

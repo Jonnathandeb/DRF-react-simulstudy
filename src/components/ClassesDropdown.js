@@ -11,7 +11,6 @@ export default class ClassesDropdown extends Component {
 
     loadClasses() {
         this.setState({ isLoading: true, })
-        console.log(getSession().jwt)
 
         fetch(`http://localhost:8000/membership_user/?user_id=${this.props.id}`,{
             headers: new Headers({

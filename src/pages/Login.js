@@ -33,10 +33,9 @@ export class LoginPage extends React.Component {
 			},
 			function (err, authResult) {
 				if (err) {
-					console.log("oops")
+					console.log("failed to create auth0 client")
 				}
 				else {
-					console.log(authResult)
 					logIn(authResult.idToken)
 				}
 			}

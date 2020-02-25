@@ -9,12 +9,10 @@ export class FeedPage extends Component {
     loadPosts() {
         this.setState({ isLoading: true, })
 
-        fetch(`http://localhost:8000/posts_for_user/`,{
-            method: 'get', 
+        fetch(`http://localhost:8000/posts_for_user/?user_id=${5}`,{
             headers: new Headers({
-                'Authorization': 'Bearer  ' + getSession().jwt,
-            }), 
-            body: `user_id=${5}`
+                'Authorization': 'Bearer ' + getSession().jwt,
+            }),
         })
         .then(res => res.json())
         .then((data) => {

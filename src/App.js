@@ -14,24 +14,24 @@ import { LeaderboardPage } from "./pages/Leaderboard"
 import { SearchPage } from "./pages/Search"
 import { Footer } from "./components/Footer"
 import CustomNavbar from './components/CustomNavbar';
-import { getSession } from "./utils/cookie_manager"
+import { getSession } from "./utils/cookie_manager";
 
 
 class SecretRoute extends Component {
   render() {
-    return (
-    <div>{1}</div>
-    )
+    if (getSession()) {
+      return (
+        <div ref={contextRef}>
+          <CustomNavbar />
+          {this.props.children}
+        </div>
+      );
+    }
+    else {
+      return <Redirect to='/login' />
+    }
   }
 }
-
-/*const SecretRoute = ({ component: Component, ...rest }) => (
-  <Route {...rest} render={(props) => (
-    getSession()
-      ? <Component {...props} />
-      : <Redirect to='/login' />
-  )} />
-);*/
 
 export default class App extends Component {
   contextRef = createRef()
@@ -40,78 +40,78 @@ export default class App extends Component {
     return (
       <div>
         <BrowserRouter>
-          <div ref={contextRef}>
-            <CustomNavbar />
-            <Switch>
-              <SecretRoute 
+          <Switch>
+            <Route
+              path="/login" 
+              render={matchProps => (
+                <LoginPage {...matchProps} />
+              )} 
+            />
+            <Route  
+              path="/register" 
+              render={matchProps => (
+                <RegisterPage {...matchProps} />
+              )} 
+            />
+            <SecretRoute>
+              <Route
                 exact 
                 path="/" 
                 render={matchProps => (
                   <HomePage {...matchProps} />
                 )} 
               />
-              <SecretRoute  
+              <Route
                 path="/profile/:id" 
                 render={matchProps => (
                   <OtherProfilePage {...matchProps} />
                 )} 
               />
-              <SecretRoute  
+              <Route
                 path="/profile" 
                 render={matchProps => (
                   <SelfProfilePage {...matchProps} />
                 )} 
               />
-              <SecretRoute  
+              <Route
                 path="/feed/:id" 
                 render={matchProps => (
                   <FeedClassPage {...matchProps} />
-                )} 
+                )}
               />
-              <SecretRoute  
+              <Route
                 path="/feed" 
                 render={matchProps => (
                   <FeedPage {...matchProps} />
                 )} 
               />
-              <SecretRoute  
+              <Route
                 path="/post/:id" 
                 render={matchProps => (
                   <PostIdPage {...matchProps} />
                 )}
               />
-              <SecretRoute  
+              <Route
+                exact
                 path="/post" 
                 render={matchProps => (
                   <MakePostPage {...matchProps} />
-                )} 
+                )}
               />
-              <Route  
-                path="/login" 
-                render={matchProps => (
-                  <LoginPage {...matchProps} />
-                )} 
-              />
-              <Route  
-                path="/register" 
-                render={matchProps => (
-                  <RegisterPage {...matchProps} />
-                )} 
-              />
-              <SecretRoute  
+              <Route
                 path="/leaderboard" 
                 render={matchProps => (
                   <LeaderboardPage {...matchProps} />
                 )} 
               />
-              <SecretRoute  
+              <Route 
                 path="/search" 
                 render={matchProps => (
                   <SearchPage {...matchProps} />
                 )} 
               />
-            </Switch>
-          </div>
+            </SecretRoute>
+          </Switch>
         </BrowserRouter>
         <Footer/>
       </div>
