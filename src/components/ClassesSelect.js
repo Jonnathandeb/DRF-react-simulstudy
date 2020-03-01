@@ -59,7 +59,6 @@ export default class ClassesDropdown extends Component {
             dropdownArr = [];
             for (let i = 0; i < this.state.data.length; i++) {
                 let classUrl = this.state.data[i].url
-                classUrl = classUrl.slice(classUrl.indexOf("/classes/") + 9);
 
                 dropdownArr.push({key: i, text: this.state.data[i].name, value: classUrl})
             }

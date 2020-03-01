@@ -1,16 +1,30 @@
 import React, { Component } from 'react';
 import { Button, Form, Grid, Header, Image, Segment } from 'semantic-ui-react';
+import { getSession } from "../utils/cookie_manager"
 
 import ClassesSelect from '../components/ClassesSelect';
 
 export class MakePostPage extends Component {
-    state = { class: '', title: '', content: '', link: '', submittedClass: '', submittedTitle: '', submittedContent: '', submittedLink: '' }
+    state = { class: '', title: '', content: '', link: ''}
 
     handleChange = (e, { name, value }) => this.setState({ [name]: value })
 
     handleSubmit = () => {
-        console.log(1)
-        console.log(this.state)
+        let postData = {"user": "http://localhost:8000/users/5/", "post_class": this.state.class, "title": this.state.title, "content": this.state.content, "image_url": this.state.link};
+        console.log(postData)
+
+        fetch(`http://localhost:8000/posts/`,{
+            headers: new Headers({
+                'Authorization': 'Bearer  ' + getSession().jwt, 
+                'Content-Type': 'application/json',
+            }), 
+            method: 'post',
+            body: JSON.stringify(postData),
+        })
+        .then(res => res.json())
+        .then((res) => {
+            console.log(res)
+		})
     }
     
     render() {
