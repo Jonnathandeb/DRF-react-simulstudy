@@ -76,7 +76,7 @@ export default class ClassesDropdown extends Component {
 
 
         return (
-            <Dropdown item text="Classes" simple>
+            <Dropdown item text={this.props.name || "Classes"} simple>
                 <Dropdown.Menu>
                     {dropdownArr}
                 </Dropdown.Menu>
