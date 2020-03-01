@@ -1,5 +1,5 @@
 import React, { Component, createRef } from 'react';
-import { Menu, Input, Sticky } from 'semantic-ui-react';
+import { Menu, Input, Sticky, Button } from 'semantic-ui-react';
 import { NavLink } from "react-router-dom";
 import ClassesDropdown from './ClassesDropdown';
 
@@ -32,6 +32,9 @@ export default class CustomNavbar extends Component {
 					/>
 					<Menu.Item>
 						<Input className='icon' placeholder='Search...' action="search"/>
+					</Menu.Item>
+					<Menu.Item position="right">
+						<Button as={NavLink} to="/post" circular icon='plus' color="blue" />
 					</Menu.Item>
 				</Menu>
 			</Sticky>

@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { Card, Dimmer, Loader, Image, Icon, Comment } from 'semantic-ui-react'
+import { Card, Dimmer, Loader, Image, Icon } from 'semantic-ui-react'
 import { Link } from "react-router-dom";
 import ReadableTime from "./ReadableTime"
 import AllPostComment from "./AllPostComment"

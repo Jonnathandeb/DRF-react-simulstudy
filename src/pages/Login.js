@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react';
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import auth0 from "auth0-js";
 import config from "../auth_config.json";
 import { logIn } from  "../utils/cookie_manager"
@@ -43,7 +43,9 @@ export class LoginPage extends React.Component {
 	}
 
   	render() {
-		const { email, password, submittedEmail, submittedPassword } = this.state
+		if (this.state.redirect) {
+			return <Redirect to="/" />
+		}
 
 		return (
 			<Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
