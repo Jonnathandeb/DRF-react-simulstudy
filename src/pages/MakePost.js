@@ -3,6 +3,7 @@ import { Button, Form, Grid, Header, Image, Segment } from 'semantic-ui-react';
 import { getSession } from "../utils/cookie_manager"
 
 import ClassesSelect from '../components/ClassesSelect';
+import { Redirect } from 'react-router-dom';
 
 export class MakePostPage extends Component {
     state = { class: '', title: '', content: '', link: ''}
@@ -23,11 +24,17 @@ export class MakePostPage extends Component {
         })
         .then(res => res.json())
         .then((res) => {
-            console.log(res)
+            if (res.url) {
+                let redUrl = res.url.substring(res.url.indexOf("localhost:8000/posts/") + 21);
+                this.setState({redirect: "post/" + redUrl});
+            }
 		})
     }
     
     render() {
+        if (this.state.redirect) 
+            return <Redirect to={this.state.redirect} />
+
         return (
             <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
                 <Grid.Column style={{ maxWidth: 450 }}>
