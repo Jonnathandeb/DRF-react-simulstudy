@@ -37,6 +37,7 @@ export class LoginPage extends React.Component {
 				}
 				else {
 					logIn(authResult.idToken)
+					this.setState({redirect: true});
 				}
 			}.bind(this)
 		)
@@ -46,7 +47,7 @@ export class LoginPage extends React.Component {
 		let err_messages = [];
 
 		if (this.state.redirect) {
-			return <Redirect to="/" />
+			return <Redirect to="/feed"/>
 		}
 
 		if (this.state.login_err) {
