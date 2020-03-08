@@ -11,7 +11,7 @@ export class FeedPage extends Component {
     loadPosts() {
         this.setState({ isLoading: true, })
 
-        fetch(`${config.url}/posts_for_user/?user_id=${5}`,{
+        fetch(`${config.url}/posts_for_user/`,{
             headers: new Headers({
                 'Authorization': 'Bearer  ' + getSession().jwt,
             }),
