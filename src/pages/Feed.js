@@ -13,7 +13,7 @@ export class FeedPage extends Component {
 
         fetch(`${config.url}/posts_for_user/?user_id=${5}`,{
             headers: new Headers({
-                'Authorization': 'Bearer ' + getSession().jwt,
+                'Authorization': 'Bearer  ' + getSession().jwt,
             }),
         })
         .then(res => res.json())

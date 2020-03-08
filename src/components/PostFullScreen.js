@@ -18,7 +18,7 @@ export default class PostFullScreen extends Component {
 		this.setState({ isLoading: true, })
 		fetch(`${config.url}/posts/${this.props.id}/`,{
             headers: new Headers({
-                'Authorization': 'Bearer ' + getSession().jwt,
+                'Authorization': 'Bearer  ' + getSession().jwt,
             }),
         })
 		.then(res => res.json())
@@ -36,7 +36,7 @@ export default class PostFullScreen extends Component {
 
 		fetch(url,{
             headers: new Headers({
-                'Authorization': 'Bearer ' + getSession().jwt,
+                'Authorization': 'Bearer  ' + getSession().jwt,
             }),
         })
 		.then(res => res.json())
@@ -54,7 +54,7 @@ export default class PostFullScreen extends Component {
 
 		fetch(url,{
             headers: new Headers({
-                'Authorization': 'Bearer ' + getSession().jwt,
+                'Authorization': 'Bearer  ' + getSession().jwt,
             }),
         })
 		.then(res => res.json())
@@ -72,7 +72,7 @@ export default class PostFullScreen extends Component {
 
 		fetch(`${config.url}/likes_for_post/?post_id=${id}`,{
             headers: new Headers({
-                'Authorization': 'Bearer ' + getSession().jwt,
+                'Authorization': 'Bearer  ' + getSession().jwt,
             }),
         })
 		.then(res => res.json())
@@ -90,7 +90,7 @@ export default class PostFullScreen extends Component {
 
 		fetch(`${config.url}/comments_for_post/?post_id=${id}`,{
             headers: new Headers({
-                'Authorization': 'Bearer ' + getSession().jwt,
+                'Authorization': 'Bearer  ' + getSession().jwt,
             }),
         })
 		.then(res => res.json())
