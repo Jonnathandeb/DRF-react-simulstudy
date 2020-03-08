@@ -5,16 +5,18 @@ import { getSession } from "../utils/cookie_manager"
 import ClassesSelect from '../components/ClassesSelect';
 import { Redirect } from 'react-router-dom';
 
+import config from "../api_config.json";
+
 export class MakePostPage extends Component {
     state = { class: '', title: '', content: '', link: ''}
 
     handleChange = (e, { name, value }) => this.setState({ [name]: value })
 
     handleSubmit = () => {
-        let postData = {"user": "http://localhost:8000/users/5/", "post_class": this.state.class, "title": this.state.title, "content": this.state.content, "image_url": this.state.link};
+        let postData = {"user": `${config.url}/users/5/`, "post_class": this.state.class, "title": this.state.title, "content": this.state.content, "image_url": this.state.link};
         console.log(postData)
 
-        fetch(`http://localhost:8000/posts/`,{
+        fetch(`${config.url}/posts/`,{
             headers: new Headers({
                 'Authorization': 'Bearer  ' + getSession().jwt, 
                 'Content-Type': 'application/json',
@@ -25,7 +27,7 @@ export class MakePostPage extends Component {
         .then(res => res.json())
         .then((res) => {
             if (res.url) {
-                let redUrl = res.url.substring(res.url.indexOf("localhost:8000/posts/") + 21);
+                let redUrl = res.url.substring(res.url.indexOf(`${config.url}/posts/`) + 21);
                 this.setState({redirect: "post/" + redUrl});
             }
 		})

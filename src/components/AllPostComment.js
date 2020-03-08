@@ -2,6 +2,8 @@ import React, {Component} from 'react'
 import PostComment from "./PostComment"
 import { Comment } from "semantic-ui-react"
 
+import config from "../api_config.json";
+
 export default class AllPostComment extends Component {
 	state = {
 		isLoading: true,
@@ -12,7 +14,7 @@ export default class AllPostComment extends Component {
 	loadComments() {
         this.setState({ isLoading: true, })
 
-        fetch(`http://localhost:8000/comments_for_post/?post_id=${this.props.id}`)
+        fetch(`${config.url}/comments_for_post/?post_id=${this.props.id}`)
         .then(res => res.json())
         .then((data) => {
             this.setState({isLoading: false, data: data})

@@ -1,7 +1,9 @@
 import React, {Component} from 'react'
 import { Comment, Dimmer, Loader } from 'semantic-ui-react'
 import { Link } from "react-router-dom";
-import ReadableTime from "./ReadableTime"
+import ReadableTime from "./ReadableTime";
+
+import config from "../api_config.json";
 
 export default class PostComment extends Component {
 	state = {
@@ -13,7 +15,7 @@ export default class PostComment extends Component {
 	loadCommentData() {
         this.setState({ isLoading: true, })
         
-        let url = this.props.subComment ? `http://localhost:8000/subcomments/${this.props.id}/` : `http://localhost:8000/comments/${this.props.id}/`;
+        let url = this.props.subComment ? `${config.url}/subcomments/${this.props.id}/` : `${config.url}/comments/${this.props.id}/`;
 
         fetch(url)
 		.then(res => res.json())
@@ -21,10 +23,9 @@ export default class PostComment extends Component {
 			this.setState({isLoading: false, data: data})
             this.loadUserData(this.state.data.user)
             if (!this.props.subComment) {
-                this.loadSubComments(`http://localhost:8000/comments_for_comment/?comment_id=${this.props.id}`)
+                this.loadSubComments(`${config.url}/comments_for_comment/?comment_id=${this.props.id}`)
             }
             else {
-                //this.loadSubComments(`http://localhost:8000/comments_for_subcomment/?comment_id=${this.props.id}`)
                 this.setState((prevState) => {
                     let dataArr = prevState.data;
                     dataArr.subcomments = [];

@@ -1,7 +1,9 @@
-import PropTypes from 'prop-types'
-import _ from 'lodash'
-import React, { Component } from 'react'
-import { Search, Label } from 'semantic-ui-react'
+import PropTypes from 'prop-types';
+import _ from 'lodash';
+import React, { Component } from 'react';
+import { Search, Label } from 'semantic-ui-react';
+
+import config from "../api_config.json";
 
 const resultRenderer = ({ name }) => <Label content={name} />
 
@@ -22,7 +24,7 @@ export default class SchoolSearch extends Component {
 
 	this.setState({ isLoading: true, value })
 	
-	fetch('http://localhost:8000/schools/')
+	fetch(`${config.url}/schools/`)
         .then(res => res.json())
         .then((data) => {
 			if (this.state.value.length < 1) return this.setState(initialState)

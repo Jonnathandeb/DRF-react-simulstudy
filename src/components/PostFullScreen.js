@@ -1,9 +1,11 @@
 import React, {Component} from 'react'
 import { Card, Dimmer, Loader, Image, Icon } from 'semantic-ui-react'
 import { Link } from "react-router-dom";
-import ReadableTime from "./ReadableTime"
-import AllPostComment from "./AllPostComment"
-import { getSession } from "../utils/cookie_manager"
+import ReadableTime from "./ReadableTime";
+import AllPostComment from "./AllPostComment";
+import { getSession } from "../utils/cookie_manager";
+
+import config from "../api_config.json";
 
 export default class PostFullScreen extends Component {
 	state = {
@@ -14,7 +16,7 @@ export default class PostFullScreen extends Component {
 
 	loadPostData() {
 		this.setState({ isLoading: true, })
-		fetch(`http://localhost:8000/posts/${this.props.id}/`,{
+		fetch(`${config.url}/posts/${this.props.id}/`,{
             headers: new Headers({
                 'Authorization': 'Bearer ' + getSession().jwt,
             }),
@@ -68,7 +70,7 @@ export default class PostFullScreen extends Component {
 	loadPostLikes(id) {
 		this.setState({ isLoading: true, })
 
-		fetch(`http://localhost:8000/likes_for_post/?post_id=${id}`,{
+		fetch(`${config.url}/likes_for_post/?post_id=${id}`,{
             headers: new Headers({
                 'Authorization': 'Bearer ' + getSession().jwt,
             }),
@@ -86,7 +88,7 @@ export default class PostFullScreen extends Component {
 	loadPostComments(id) {
 		this.setState({ isLoading: true, })
 
-		fetch(`http://localhost:8000/comments_for_post/?post_id=${id}`,{
+		fetch(`${config.url}/comments_for_post/?post_id=${id}`,{
             headers: new Headers({
                 'Authorization': 'Bearer ' + getSession().jwt,
             }),

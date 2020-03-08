@@ -1,8 +1,10 @@
 import React, {Component} from 'react'
 import { Card, Dimmer, Loader, Image, Icon } from 'semantic-ui-react'
 import { Link } from "react-router-dom";
-import ReadableTime from "./ReadableTime"
-import { getSession } from "../utils/cookie_manager"
+import ReadableTime from "./ReadableTime";
+import { getSession } from "../utils/cookie_manager";
+
+import config from "../api_config.json";
 
 export default class PostCard extends Component {
 	state = {
@@ -68,7 +70,7 @@ export default class PostCard extends Component {
 	loadPostLikes(id) {
 		this.setState({ isLoading: true, })
 
-		fetch(`http://localhost:8000/likes_for_post/?post_id=${id}`, {
+		fetch(`${config.url}/likes_for_post/?post_id=${id}`, {
             headers: new Headers({
                 'Authorization': 'Bearer  ' + getSession().jwt, 
             }), 
@@ -86,7 +88,7 @@ export default class PostCard extends Component {
 	loadPostComments(id) {
 		this.setState({ isLoading: true, })
 
-		fetch(`http://localhost:8000/comments_for_post/?post_id=${id}`, {
+		fetch(`${config.url}/comments_for_post/?post_id=${id}`, {
             headers: new Headers({
                 'Authorization': 'Bearer  ' + getSession().jwt, 
             }), 

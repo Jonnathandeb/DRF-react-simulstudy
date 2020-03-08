@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { Card } from 'semantic-ui-react';
-import PostCard from "../components/PostCard"
-import { getSession } from "../utils/cookie_manager"
+import PostCard from "../components/PostCard";
+import { getSession } from "../utils/cookie_manager";
+
+import config from "../api_config.json";
 
 export class FeedPage extends Component {
     state = { isLoading: true }
@@ -9,7 +11,7 @@ export class FeedPage extends Component {
     loadPosts() {
         this.setState({ isLoading: true, })
 
-        fetch(`http://localhost:8000/posts_for_user/?user_id=${5}`,{
+        fetch(`${config.url}/posts_for_user/?user_id=${5}`,{
             headers: new Headers({
                 'Authorization': 'Bearer ' + getSession().jwt,
             }),

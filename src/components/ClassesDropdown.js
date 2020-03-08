@@ -3,6 +3,8 @@ import { NavLink } from "react-router-dom";
 import { Dropdown } from 'semantic-ui-react';
 import { getSession } from "../utils/cookie_manager"
 
+import config from "../api_config.json";
+
 export default class ClassesDropdown extends Component {
     state = {
         isLoading: true,
@@ -12,7 +14,7 @@ export default class ClassesDropdown extends Component {
     loadClasses() {
         this.setState({ isLoading: true, })
 
-        fetch(`http://localhost:8000/membership_user/?user_id=${this.props.id}`,{
+        fetch(`${config.url}/membership_user/?user_id=${this.props.id}`,{
             headers: new Headers({
                 'Authorization': 'Bearer  ' + getSession().jwt, 
             }), 
