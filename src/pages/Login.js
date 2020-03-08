@@ -33,18 +33,24 @@ export class LoginPage extends React.Component {
 			},
 			function (err, authResult) {
 				if (err) {
-					console.log("failed to create auth0 client")
+					this.setState({login_err: err});
 				}
 				else {
 					logIn(authResult.idToken)
 				}
-			}
+			}.bind(this)
 		)
 	}
 
   	render() {
+		let err_messages = [];
+
 		if (this.state.redirect) {
 			return <Redirect to="/" />
+		}
+
+		if (this.state.login_err) {
+			err_messages.push((<Message negative><Message.Header>Login Error</Message.Header>{this.state.login_err.description}</Message>))
 		}
 
 		return (
@@ -55,6 +61,7 @@ export class LoginPage extends React.Component {
 				</Header>
 				<Form size='large' onSubmit={this.handleSubmit}>
 					<Segment stacked>
+					{err_messages}
 					<Form.Input 
 						fluid 
 						icon='user' 
