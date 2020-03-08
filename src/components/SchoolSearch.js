@@ -43,7 +43,7 @@ export default class SchoolSearch extends Component {
     const { isLoading, value, results } = this.state
 
     return (
-		<Search
+		<Select
 		loading={isLoading}
 		onResultSelect={this.handleResultSelect}
 		onSearchChange={_.debounce(this.handleSearchChange, 500, {

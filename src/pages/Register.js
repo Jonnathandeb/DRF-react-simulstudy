@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import SchoolSearch from "../components/SchoolSearch";
+import SchoolSearchDropdown from "../components/SchoolSearchDropdown";
 import { Button, Form, Grid, Header, Image, Message, Segment, Progress } from 'semantic-ui-react';
 import { Link } from "react-router-dom";
 
@@ -9,6 +9,12 @@ export class RegisterPage extends Component {
     state = {
         progress: 0,
         isNullArr: [true, true, true],
+        school: '',
+        email: '',
+        password: '',
+        submittedSchool: '',
+        submittedEmail: '',
+        submittedPassword: ''
     }
     
     forwardProgress = () => {
@@ -53,6 +59,14 @@ export class RegisterPage extends Component {
         }
     }
 
+    handleSubmit = () => {
+		const { email, password } = this.state
+		
+		this.login(email, password)
+		
+		this.setState({ submittedEmail: email, submittedPassword: password })
+	}
+
     render() {
         return (
             <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
@@ -60,16 +74,24 @@ export class RegisterPage extends Component {
                 <Header as='h2' textAlign='center'>
                     <Image src='/SS_logo.png' /> Create an account
                 </Header>
-                <Form size='large'>
+                <Form size='large' onSubmit={this.submit}>
                     <Segment stacked>
                     <Progress value={this.state.progress} total={maxProgress} progress='ratio' />
-                    <SchoolSearch otherChangeFunction={this.inputChange} id="0" />
-                    <Form.Input fluid icon='user' iconPosition='left' placeholder='School Email Address' onChange={this.inputChange} id="1" />
+                    <SchoolSearchDropdown id="0" />
+                    <Form.Input 
+                        fluid
+                        icon='user'
+                        iconPosition='left'
+                        placeholder='School Email Address'
+                        name="email"
+                        onChange={this.inputChange}
+                        id="1" />
                     <Form.Input
                         fluid
                         icon='lock'
                         iconPosition='left'
                         placeholder='Create Password'
+                        name="password"
                         type='password'
                         onChange={this.inputChange}
                         id="2"
