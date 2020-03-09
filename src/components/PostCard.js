@@ -70,7 +70,7 @@ export default class PostCard extends Component {
 	loadPostLikes(id) {
 		this.setState({ isLoading: true, })
 
-		fetch(`${config.url}/likes_for_post/`, {
+		fetch(`${config.url}/likes_for_post/?post_id=${id}`, {
             headers: new Headers({
                 'Authorization': 'Bearer  ' + getSession().jwt, 
             }), 
