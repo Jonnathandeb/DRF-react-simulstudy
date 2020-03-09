@@ -8,7 +8,7 @@ class SchoolSearchDropdown extends React.Component {
         results: []
     }
 
-    handleChange = (e) => {
+    handleSearchChange = (e) => {
         let value = e.target.value;
     
         if (value.trim().length < 1) {
@@ -43,8 +43,9 @@ class SchoolSearchDropdown extends React.Component {
                 fluid
                 search
                 selection
-                onSearchChange={this.handleChange}
+                onSearchChange={this.handleSearchChange}
                 options={this.state.results}
+                onChange={this.props.handleChange}
             />
         )
     }
