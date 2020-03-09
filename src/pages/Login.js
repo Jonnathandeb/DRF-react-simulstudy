@@ -3,7 +3,7 @@ import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui
 import { Link, Redirect } from "react-router-dom";
 import auth0 from "auth0-js";
 import config from "../auth_config.json";
-import { logIn } from  "../utils/cookie_manager"
+import { logIn } from  "../utils/cookie_manager";
 
 
 export class LoginPage extends React.Component {

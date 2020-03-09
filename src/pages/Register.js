@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import SchoolSearchDropdown from "../components/SchoolSearchDropdown";
 import { Button, Form, Grid, Header, Image, Message, Segment, Progress } from 'semantic-ui-react';
 import { Link } from "react-router-dom";
+import auth0 from "auth0-js";
+import { logIn } from  "../utils/cookie_manager"
+import config from "../auth_config.json";
 
 const maxProgress = 3;
 
@@ -16,6 +19,11 @@ export class RegisterPage extends Component {
 		submittedEmail: '',
 		submittedPassword: ''
 	}
+
+	auth0 = new auth0.WebAuth({
+		domain: config.domain,
+		clientID: config.clientId
+	});
 	
 	forwardProgress = () => {
 		this.setState((prevState) => ({
@@ -29,8 +37,8 @@ export class RegisterPage extends Component {
 		}));
 	}
 
-	inputChange = (e) => {
-		let str = e.target.value
+	inputChange = (e, { name, value }) => {
+		let str = value
 		let isEmpty = !str.match(/\S/)
 		let targetId = e.target.id
 
@@ -57,6 +65,8 @@ export class RegisterPage extends Component {
 
 			this.forwardProgress();
 		}
+
+		this.setState({ [name]: value })
 	}
 
 	handleSchoolChange = (e, {value}) => {
@@ -68,11 +78,11 @@ export class RegisterPage extends Component {
 	}
 
 	handleSubmit = () => {
-		const { email, password } = this.state
+		const { email, password, school } = this.state
 		
-		this.login(email, password)
-		
-		this.setState({ submittedEmail: email, submittedPassword: password })
+		this.setState({ submittedEmail: email, submittedPassword: password, submittedSchool: school })
+
+
 	}
 
 	render() {
@@ -82,7 +92,7 @@ export class RegisterPage extends Component {
 				<Header as='h2' textAlign='center'>
 					<Image src='/SS_logo.png' /> Create an account
 				</Header>
-				<Form size='large' onSubmit={this.submit}>
+				<Form size='large' onSubmit={this.handleSubmit}>
 					<Segment stacked>
 					<Progress value={this.state.progress} total={maxProgress} progress='ratio' />
 					<SchoolSearchDropdown id="0" handleChange={this.handleSchoolChange}/>
