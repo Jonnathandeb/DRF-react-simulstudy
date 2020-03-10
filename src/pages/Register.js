@@ -92,20 +92,12 @@ export class RegisterPage extends Component {
 	}
 
 	register = (email, password, school, fullName) => {
-		/*
-		let userData = {
-			"username": this.state.submittedEmail,
-			"school": this.state.submittedSchool,
-			"fullName": this.state.submittedFullName,
-			"password": this.submittedPassword,
-		}*/
-
 		let userData = {
 			"username": email,
 			"school": config.url + "/schools/" + school + "/",
+			"fullName": fullName,
+			"password": password,
 		}
-
-		console.log(JSON.stringify(userData))
 
 		fetch(`${config.url}/users/`,{
             headers: new Headers({
