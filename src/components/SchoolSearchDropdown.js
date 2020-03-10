@@ -29,7 +29,9 @@ class SchoolSearchDropdown extends React.Component {
                 // cut off '/'
                 id = id.substring(0, id.length - 1);
                 
-                res.push({key: id, value: id, text: data[i].name})
+                let domain = data[i].domain
+
+                res.push({key: id, value: JSON.stringify({"id": id, "domain": domain}), text: data[i].name})
             }
 
             this.setState({results: res})

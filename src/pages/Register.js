@@ -6,18 +6,21 @@ import auth0 from "auth0-js";
 import { logIn } from  "../utils/cookie_manager"
 import config from "../auth_config.json";
 
-const maxProgress = 3;
+const maxProgress = 4;
 
 export class RegisterPage extends Component {
 	state = {
 		progress: 0,
-		isNullArr: [true, true, true],
+		isNullArr: [true, true, true, true, true],
 		school: '',
 		email: '',
+		fullName: '',
 		password: '',
 		submittedSchool: '',
 		submittedEmail: '',
-		submittedPassword: ''
+		submittedFullName: '',
+		submittedPassword: '',
+		domain: ''
 	}
 
 	auth0 = new auth0.WebAuth({
@@ -74,7 +77,9 @@ export class RegisterPage extends Component {
 			this.forwardProgress();
 		}
 
-		this.setState({school: value})
+		value = JSON.parse(value);
+
+		this.setState({school: value.id, domain: value.domain})
 	}
 
 	handleSubmit = () => {
@@ -97,14 +102,37 @@ export class RegisterPage extends Component {
 					<Progress value={this.state.progress} total={maxProgress} progress='ratio' />
 					<SchoolSearchDropdown id="0" handleChange={this.handleSchoolChange}/>
 					<br />
+					<Form.Group>
 					<Form.Input 
+						fluid
+						icon='mail'
+						iconPosition='left'
+						placeholder='School Email (before @)'
+						name="email"
+						onChange={this.inputChange}
+						id="1" 
+						width={15}
+					/>
+					<Form.Input 
+						fluid
+						placeholder='@school.org'
+						readOnly
+						value={this.state.domain}
+						icon="at"
+						iconPosition="right"
+						width={10}
+						id="2"
+					/>
+					</Form.Group>
+					<Form.Input
 						fluid
 						icon='user'
 						iconPosition='left'
-						placeholder='School Email Address'
-						name="email"
+						placeholder='Full Name'
+						name="fullName"
 						onChange={this.inputChange}
-						id="1" />
+						id="3"
+					/>
 					<Form.Input
 						fluid
 						icon='lock'
@@ -113,7 +141,7 @@ export class RegisterPage extends Component {
 						name="password"
 						type='password'
 						onChange={this.inputChange}
-						id="2"
+						id="4"
 					/>
 
 					<Button fluid size='large'>
