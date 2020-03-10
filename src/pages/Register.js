@@ -3,8 +3,9 @@ import SchoolSearchDropdown from "../components/SchoolSearchDropdown";
 import { Button, Form, Grid, Header, Image, Message, Segment, Progress } from 'semantic-ui-react';
 import { Link } from "react-router-dom";
 import auth0 from "auth0-js";
-import { logIn } from  "../utils/cookie_manager"
-import config from "../auth_config.json";
+import { logIn, getSession } from  "../utils/cookie_manager";
+import auth_config from "../auth_config.json";
+import config from "../api_config.json";
 
 const maxProgress = 4;
 
@@ -24,8 +25,8 @@ export class RegisterPage extends Component {
 	}
 
 	auth0 = new auth0.WebAuth({
-		domain: config.domain,
-		clientID: config.clientId
+		domain: auth_config.domain,
+		clientID: auth_config.clientId
 	});
 	
 	forwardProgress = () => {
@@ -83,11 +84,41 @@ export class RegisterPage extends Component {
 	}
 
 	handleSubmit = () => {
-		const { email, password, school } = this.state
+		const { email, password, school, fullName } = this.state
 		
-		this.setState({ submittedEmail: email, submittedPassword: password, submittedSchool: school })
+		this.setState({ submittedEmail: email, submittedPassword: password, submittedSchool: school, submittedFullName: fullName })
 
+		this.register(email, password, school, fullName);
+	}
 
+	register = (email, password, school, fullName) => {
+		/*
+		let userData = {
+			"username": this.state.submittedEmail,
+			"school": this.state.submittedSchool,
+			"fullName": this.state.submittedFullName,
+			"password": this.submittedPassword,
+		}*/
+
+		let userData = {
+			"username": email,
+			"school": config.url + "/schools/" + school + "/",
+		}
+
+		console.log(JSON.stringify(userData))
+
+		fetch(`${config.url}/users/`,{
+            headers: new Headers({
+                'Authorization': 'Bearer  ' + getSession().jwt, 
+                'Content-Type': 'application/json',
+            }), 
+            method: 'post',
+            body: JSON.stringify(userData),
+        })
+        .then(res => res.json())
+        .then((res) => {
+            console.log(res)
+		})
 	}
 
 	render() {
@@ -119,7 +150,6 @@ export class RegisterPage extends Component {
 						readOnly
 						value={this.state.domain}
 						icon="at"
-						iconPosition="right"
 						width={10}
 						id="2"
 					/>

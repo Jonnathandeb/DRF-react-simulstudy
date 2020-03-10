@@ -13,8 +13,7 @@ export class MakePostPage extends Component {
     handleChange = (e, { name, value }) => this.setState({ [name]: value })
 
     handleSubmit = () => {
-        let postData = {"user": `${config.url}/users/5/`, "post_class": this.state.class, "title": this.state.title, "content": this.state.content, "image_url": this.state.link};
-        console.log(postData)
+        let postData = {"post_class": this.state.class, "title": this.state.title, "content": this.state.content, "image_url": this.state.link};
 
         fetch(`${config.url}/posts/`,{
             headers: new Headers({
