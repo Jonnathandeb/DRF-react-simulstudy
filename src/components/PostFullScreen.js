@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { Card, Dimmer, Loader, Image, Icon } from 'semantic-ui-react'
+import { Card, Dimmer, Loader, Image, Icon, Button, Label } from 'semantic-ui-react'
 import { Link } from "react-router-dom";
 import ReadableTime from "./ReadableTime";
 import AllPostComment from "./AllPostComment";
@@ -149,6 +149,8 @@ export default class PostFullScreen extends Component {
 			cardStyle = {minWidth: "65%"};
 		}
 
+		let isLiked = ["Like", "white"];
+
 		return (
             <Card to={`/post/${post.id}`} centered style={cardStyle}>
                 {cardContent}
@@ -168,8 +170,6 @@ export default class PostFullScreen extends Component {
                     </Card.Description>
                 </Card.Content>
                 <Card.Content extra>
-                    <Icon name='heart' />
-                    {post.like_count} Like(s)
                     <br />
                     <Icon name='comment' />
                     {post.comment_count} Comment(s)
