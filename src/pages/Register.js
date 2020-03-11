@@ -89,6 +89,8 @@ export class RegisterPage extends Component {
 		else {
 			this.setState({email_err: null})
 		}
+
+		this.setState({ [name]: value })
 	}
 
 	handleSchoolChange = (e, {value}) => {
@@ -101,7 +103,7 @@ export class RegisterPage extends Component {
 		this.setState({school: value.id, domain: value.domain})
 	}
 
-	handlePasswordChange = (e, {value}) => {
+	handlePasswordChange = (e, {name, value}) => {
 		this.inputChange(e);
 
 		let passCheck = /(?=.{8,})((?=.*\d)(?=.*[a-z])(?=.*[A-Z])|(?=.*\d)(?=.*[a-zA-Z])(?=.*[\W_])|(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_])).*/
@@ -115,6 +117,14 @@ export class RegisterPage extends Component {
 		else {
 			this.setState({password_err: null})
 		}
+
+		this.setState({ [name]: value })
+	}
+
+	handleNameChange = (e, {name, value}) => {
+		this.inputChange(e);
+		
+		this.setState({ [name]: value })
 	}
 
 	handleSubmit = () => {
@@ -187,7 +197,7 @@ export class RegisterPage extends Component {
 						iconPosition='left'
 						placeholder='Full Name'
 						name="fullName"
-						onChange={this.inputChange}
+						onChange={this.handleNameChange}
 						id="3"
 					/>
 					{this.state.password_err}
