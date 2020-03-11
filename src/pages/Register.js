@@ -6,6 +6,7 @@ import auth0 from "auth0-js";
 import { logIn, getSession } from  "../utils/cookie_manager";
 import auth_config from "../auth_config.json";
 import config from "../api_config.json";
+import validator from "email-validator";
 
 const maxProgress = 4;
 
@@ -21,7 +22,9 @@ export class RegisterPage extends Component {
 		submittedEmail: '',
 		submittedFullName: '',
 		submittedPassword: '',
-		domain: ''
+		domain: '',
+		email_err: null,
+		password_err: null
 	}
 
 	auth0 = new auth0.WebAuth({
@@ -41,10 +44,10 @@ export class RegisterPage extends Component {
 		}));
 	}
 
-	inputChange = (e, { name, value }) => {
-		let str = value
-		let isEmpty = !str.match(/\S/)
-		let targetId = e.target.id
+	inputChange = (e) => {
+		let str = e.target.value
+        let isEmpty = !str.match(/\S/)
+        let targetId = e.target.id
 
 		// if the string is empty and was not before
 		if (isEmpty && !this.state.isNullArr[targetId]) {
@@ -69,8 +72,23 @@ export class RegisterPage extends Component {
 
 			this.forwardProgress();
 		}
+	}
 
-		this.setState({ [name]: value })
+	handleEmailChange = (e, { name, value }) => {
+		this.inputChange(e);
+
+		if (!this.state.school) {
+			this.setState({email_err: <Message negative>A school must be selected</Message>})
+		}
+		else if (value.trim() === "") {
+			this.setState({email_err: <Message negative>Email cannot be blank</Message>})
+		}
+		else if (!validator.validate(value + "@" + this.state.domain)) {
+			this.setState({email_err: <Message negative>Email not formatted correctly</Message>})
+		}
+		else {
+			this.setState({email_err: null})
+		}
 	}
 
 	handleSchoolChange = (e, {value}) => {
@@ -81,6 +99,22 @@ export class RegisterPage extends Component {
 		value = JSON.parse(value);
 
 		this.setState({school: value.id, domain: value.domain})
+	}
+
+	handlePasswordChange = (e, {value}) => {
+		this.inputChange(e);
+
+		let passCheck = /(?=.{8,})((?=.*\d)(?=.*[a-z])(?=.*[A-Z])|(?=.*\d)(?=.*[a-zA-Z])(?=.*[\W_])|(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_])).*/
+
+		if (value.trim() === "") {
+			this.setState({password_err: <Message negative>The password must not be blank</Message>})
+		}
+		else if (!passCheck.test(value)) {
+			this.setState({password_err: <Message negative>The password must contain at least 8 characters including at least 3 of the following 4 types of characters: a lower-case letter, an upper-case letter, a number, a special character (such as !@#$%^&*).</Message>})
+		}
+		else {
+			this.setState({password_err: null})
+		}
 	}
 
 	handleSubmit = () => {
@@ -125,6 +159,7 @@ export class RegisterPage extends Component {
 					<Progress value={this.state.progress} total={maxProgress} progress='ratio' />
 					<SchoolSearchDropdown id="0" handleChange={this.handleSchoolChange}/>
 					<br />
+					{this.state.email_err}
 					<Form.Group>
 					<Form.Input 
 						fluid
@@ -132,7 +167,7 @@ export class RegisterPage extends Component {
 						iconPosition='left'
 						placeholder='School Email (before @)'
 						name="email"
-						onChange={this.inputChange}
+						onChange={this.handleEmailChange}
 						id="1" 
 						width={15}
 					/>
@@ -155,6 +190,7 @@ export class RegisterPage extends Component {
 						onChange={this.inputChange}
 						id="3"
 					/>
+					{this.state.password_err}
 					<Form.Input
 						fluid
 						icon='lock'
@@ -162,7 +198,7 @@ export class RegisterPage extends Component {
 						placeholder='Create Password'
 						name="password"
 						type='password'
-						onChange={this.inputChange}
+						onChange={this.handlePasswordChange}
 						id="4"
 					/>
 
