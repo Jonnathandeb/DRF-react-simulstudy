@@ -48,6 +48,50 @@ class LikeAndDislike extends React.Component {
         })
     }
 
+    likePost(id, like_value) {
+        let postData = {"value": like_value, "post": `${config.url}/posts/${id}/`};
+
+        fetch(`${config.url}/postlikes/`,{
+            headers: new Headers({
+                'Authorization': 'Bearer  ' + getSession().jwt, 
+                'Content-Type': 'application/json',
+            }), 
+            method: 'post',
+            body: JSON.stringify(postData),
+        })
+        .then(res => res.json())
+        .then((res) => {
+            if (res.success) {
+                this.loadUserLiked(id)
+                
+                let likeCount = this.state.likeCount
+                let dislikeCount = this.state.dislikeCount
+
+                // if the user liked the post
+                if (like_value === 1) {
+                    likeCount++;
+                    dislikeCount--;
+                }
+                // if the user disliked the post
+                else if (like_value === 2) {
+                    likeCount--;
+                    dislikeCount++;
+                }
+                // if the user unliked or undisliked
+                else if (like_value === 0) {
+                    likeCount += this.state.hasLiked ? -1 : 0;
+                    dislikeCount += this.state.hasDisliked ? -1 : 0;
+                }
+
+                this.setState({likeCount: likeCount, dislikeCount: dislikeCount})
+            }
+            else {
+                // error liking / disliking
+                console.log("there was an error processing the request")
+            }
+		})
+    }
+
     componentDidMount() {
         let post_id = this.props.post_id
 
@@ -66,7 +110,7 @@ class LikeAndDislike extends React.Component {
 
         return (
             <div>
-                <Button as='div' labelPosition='right'>
+                <Button as='div' labelPosition='right' onClick={() => {this.likePost(this.props.post_id, this.state.hasLiked ? 0 : 1)}}>
                     <Button color={likeColor}>
                         <Icon name='heart' />
                         {likeText}
@@ -75,7 +119,7 @@ class LikeAndDislike extends React.Component {
                         {this.state.likeCount}
                     </Label>
                 </Button>
-                <Button as='div' labelPosition='right'>
+                <Button as='div' labelPosition='right' onClick={() => {this.likePost(this.props.post_id, this.state.hasDisliked ? 0 : 2)}}>
                     <Button color={dislikeColor}>
                         <Icon name='thumbs down' />
                         {dislikeText}
