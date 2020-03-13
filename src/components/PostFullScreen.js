@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import ReadableTime from "./ReadableTime";
 import AllPostComment from "./AllPostComment";
 import { getSession } from "../utils/cookie_manager";
+import LikeAndDislike from "../components/LikeAndDislike";
+import CommentCount from "../components/CommentCount";
 
 import config from "../api_config.json";
 
@@ -171,8 +173,9 @@ export default class PostFullScreen extends Component {
                 </Card.Content>
                 <Card.Content extra>
                     <br />
-                    <Icon name='comment' />
-                    {post.comment_count} Comment(s)
+					<LikeAndDislike post_id={this.props.id} />
+					<br />
+					<CommentCount post_id={this.props.id} />
                 </Card.Content>
                 <AllPostComment id={this.props.id} />
             </Card>

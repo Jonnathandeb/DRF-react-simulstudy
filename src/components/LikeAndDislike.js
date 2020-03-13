@@ -1,7 +1,17 @@
 import React from 'react'
-import { Button, Label } from 'semantic-ui-react'
+import { Button, Label, Icon } from 'semantic-ui-react'
+
+import { getSession } from "../utils/cookie_manager";
+
+import config from "../api_config.json";
 
 class LikeAndDislike extends React.Component {
+    state = {
+        likeCount: 0,
+        dislikeCount: 0,
+        commentCount: 0,
+    }
+
     loadPostLikes(id) {
         this.setState({ isLoading: true, })
     
@@ -12,42 +22,40 @@ class LikeAndDislike extends React.Component {
         })
         .then(res => res.json())
         .then((data) => {
-            this.setState((prevState) => {
-                let dataArr = prevState.data;
-                dataArr.like_count = data.length;
-                return {isLoading: false, data: dataArr}
-            })
+            if (data.detail) {
+                console.log(data.detail)
+            }
+            else if (data.hasOwnProperty("likes") && data.hasOwnProperty("dislikes")) {
+                this.setState({likeCount: data.likes, dislikeCount: data.dislikes})
+            }
         })
     }
-    
-    loadPostComments(id) {
-        this.setState({ isLoading: true, })
-    
-        fetch(`${config.url}/comments_for_post/?post_id=${id}`,{
-            headers: new Headers({
-                'Authorization': 'Bearer  ' + getSession().jwt,
-            }),
-        })
-        .then(res => res.json())
-        .then((data) => {
-            this.setState((prevState) => {
-                let dataArr = prevState.data;
-                dataArr.comment_count = data.length;
-                return {isLoading: false, data: dataArr}
-            })
-        })
+
+    componentDidMount() {
+        let post_id = this.props.post_id
+
+        this.loadPostLikes(post_id)
     }
 
     render() {
         return (
             <div>
                 <Button as='div' labelPosition='right'>
-                    <Button color={isLiked[1]}>
+                    <Button color={"red"}>
                         <Icon name='heart' />
-                        {isLiked[0]}
+                        {"Like"}
                     </Button>
-                    <Label as='a' basic color={isLiked[1]} pointing='left'>
-                        {post.like_count}
+                    <Label as='a' basic color={"red"} pointing='left'>
+                        {this.state.likeCount}
+                    </Label>
+                </Button>
+                <Button as='div' labelPosition='right'>
+                    <Button color={"blue"}>
+                        <Icon name='thumbs down' />
+                        {"Dislike"}
+                    </Button>
+                    <Label as='a' basic color={"blue"} pointing='left'>
+                        {this.state.dislikeCount}
                     </Label>
                 </Button>
             </div>
