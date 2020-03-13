@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import PostComment from "./PostComment"
-import { Comment } from "semantic-ui-react"
+import { Comment } from "semantic-ui-react";
+import { getSession } from "../utils/cookie_manager";
 
 import config from "../api_config.json";
 
@@ -14,7 +15,11 @@ export default class AllPostComment extends Component {
 	loadComments() {
         this.setState({ isLoading: true, })
 
-        fetch(`${config.url}/comments_for_post/?post_id=${this.props.id}`)
+        fetch(`${config.url}/comments_for_post/?post_id=${this.props.id}`,{
+            headers: new Headers({
+                'Authorization': 'Bearer  ' + getSession().jwt,
+            }),
+        })
         .then(res => res.json())
         .then((data) => {
             this.setState({isLoading: false, data: data})
