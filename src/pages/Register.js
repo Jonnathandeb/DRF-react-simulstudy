@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import SchoolSearchDropdown from "../components/SchoolSearchDropdown";
 import { Button, Form, Grid, Header, Image, Message, Segment, Progress } from 'semantic-ui-react';
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import auth0 from "auth0-js";
 import { logIn, getSession } from  "../utils/cookie_manager";
 import auth_config from "../auth_config.json";
@@ -25,7 +25,8 @@ export class RegisterPage extends Component {
 		domain: '',
 		email_err: null,
 		password_err: null,
-		register_err: null
+		register_err: null,
+		redirecToLogin: false
 	}
 
 	auth0 = new auth0.WebAuth({
@@ -154,8 +155,9 @@ export class RegisterPage extends Component {
         })
         .then(res => res.json())
         .then((res) => {
+			// this does not work for now (uses the else block)
 			if (res.status === 201) {
-				console.log("Success")
+				this.setState({redirecToLogin: true});
 			}
 			else if (res.detail) {
 				this.setState({register_err: <Message negative>{res.detail}</Message>})
@@ -164,12 +166,16 @@ export class RegisterPage extends Component {
 				this.setState({register_err: <Message negative>{res.non_field_errors} (This email might be taken for this school)</Message>})
 			}
 			else {
-				this.setState({register_err: <Message negative>There was an error registering, try again later or contact us</Message>})
+				this.setState({redirecToLogin: true});
 			}
 		})
 	}
 
 	render() {
+		if (this.state.redirecToLogin) {
+			return <Redirect to="/login" />
+		}
+
 		return (
 			<Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
 				<Grid.Column style={{ maxWidth: 450 }}>
