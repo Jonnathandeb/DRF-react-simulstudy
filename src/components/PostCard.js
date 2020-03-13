@@ -3,6 +3,8 @@ import { Card, Dimmer, Loader, Image, Icon } from 'semantic-ui-react'
 import { Link } from "react-router-dom";
 import ReadableTime from "./ReadableTime";
 import { getSession } from "../utils/cookie_manager";
+import LikeAndDislike from "../components/LikeAndDislike";
+import CommentCount from "../components/CommentCount";
 
 import config from "../api_config.json";
 
@@ -26,8 +28,6 @@ export default class PostCard extends Component {
 			this.setState({isLoading: false, data: data})
 			this.loadClassName(this.state.data.post_class)
 			this.loadUserData(this.state.data.user)
-			this.loadPostLikes(this.state.data.url.slice(this.state.data.url.indexOf("/posts/") + 7, this.state.data.url.length - 1))
-			this.loadPostComments(this.state.data.url.slice(this.state.data.url.indexOf("/posts/") + 7, this.state.data.url.length - 1))
 		})
 	}
 
@@ -67,42 +67,6 @@ export default class PostCard extends Component {
 		})
 	}
 
-	loadPostLikes(id) {
-		this.setState({ isLoading: true, })
-
-		fetch(`${config.url}/likes_for_post/?post_id=${id}`, {
-            headers: new Headers({
-                'Authorization': 'Bearer  ' + getSession().jwt, 
-            }), 
-        })
-		.then(res => res.json())
-		.then((data) => {
-			this.setState((prevState) => {
-				let dataArr = prevState.data;
-				dataArr.like_count = data.length;
-				return {isLoading: false, data: dataArr}
-			})
-		})
-	}
-
-	loadPostComments(id) {
-		this.setState({ isLoading: true, })
-
-		fetch(`${config.url}/comments_for_post/?post_id=${id}`, {
-            headers: new Headers({
-                'Authorization': 'Bearer  ' + getSession().jwt, 
-            }), 
-        })
-		.then(res => res.json())
-		.then((data) => {
-			this.setState((prevState) => {
-				let dataArr = prevState.data;
-				dataArr.comment_count = data.length;
-				return {isLoading: false, data: dataArr}
-			})
-		})
-	}
-
 	componentDidMount() {
 		this.loadPostData()
 	}
@@ -124,11 +88,17 @@ export default class PostCard extends Component {
 	render() {
 		let post = {};
 		let cardContent;
+		let extraCardContent;
 		if (!this.state.isLoading) {
 			cardContent = null;
 			post = this.state.data;
 			post.id = this.state.data.url.slice(this.state.data.url.indexOf("/posts/") + 7, this.state.data.url.length - 1);
 			post.username_id = this.state.data.user.slice(this.state.data.user.indexOf("/users/") + 7);
+			extraCardContent = (<Card.Content extra>
+				<LikeAndDislike post_id={post.id} />
+				<br />
+				<CommentCount post_id={post.id} />
+			</Card.Content>)
 		}
 		else {
 			cardContent = (
@@ -167,13 +137,7 @@ export default class PostCard extends Component {
 						{post.content}
 					</Card.Description>
 				</Card.Content>
-				<Card.Content extra>
-					<Icon name='heart' />
-					{post.like_count} Like(s)
-					<br />
-					<Icon name='comment' />
-					{post.comment_count} Comment(s)
-				</Card.Content>
+				{extraCardContent}
 			</Card>
 		)
 	}

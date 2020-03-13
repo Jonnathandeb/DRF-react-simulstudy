@@ -34,7 +34,8 @@ class LikeAndDislike extends React.Component {
     componentDidMount() {
         let post_id = this.props.post_id
 
-        this.loadPostLikes(post_id)
+        if (!(post_id == null))
+            this.loadPostLikes(post_id)
     }
 
     render() {

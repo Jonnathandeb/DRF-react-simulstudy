@@ -33,7 +33,8 @@ class CommentCount extends React.Component {
     componentDidMount() {
         let post_id = this.props.post_id
 
-        this.loadPostComments(post_id)
+        if (!(post_id == null))
+            this.loadPostComments(post_id)
     }
 
     render() {
