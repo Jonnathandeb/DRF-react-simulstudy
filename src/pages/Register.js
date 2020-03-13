@@ -24,7 +24,8 @@ export class RegisterPage extends Component {
 		submittedPassword: '',
 		domain: '',
 		email_err: null,
-		password_err: null
+		password_err: null,
+		register_err: null
 	}
 
 	auth0 = new auth0.WebAuth({
@@ -153,7 +154,18 @@ export class RegisterPage extends Component {
         })
         .then(res => res.json())
         .then((res) => {
-            console.log(res)
+			if (res.status === 201) {
+				console.log("Success")
+			}
+			else if (res.detail) {
+				this.setState({register_err: <Message negative>{res.detail}</Message>})
+			}
+			else if (res.non_field_errors) {
+				this.setState({register_err: <Message negative>{res.non_field_errors} (This email might be taken for this school)</Message>})
+			}
+			else {
+				this.setState({register_err: <Message negative>There was an error registering, try again later or contact us</Message>})
+			}
 		})
 	}
 
@@ -167,6 +179,7 @@ export class RegisterPage extends Component {
 				<Form size='large' onSubmit={this.handleSubmit}>
 					<Segment stacked>
 					<Progress value={this.state.progress} total={maxProgress} progress='ratio' />
+					{this.state.register_err}
 					<SchoolSearchDropdown id="0" handleChange={this.handleSchoolChange}/>
 					<br />
 					{this.state.email_err}
