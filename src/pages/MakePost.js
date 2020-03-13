@@ -8,7 +8,8 @@ import { Redirect } from 'react-router-dom';
 import config from "../api_config.json";
 
 export class MakePostPage extends Component {
-    state = { class: '', title: '', content: '', link: ''}
+    state = { class: '', title: '', content: '', file: ''}
+    fileInputRef = React.createRef();
 
     handleChange = (e, { name, value }) => this.setState({ [name]: value })
 
@@ -57,12 +58,21 @@ export class MakePostPage extends Component {
                         name="content"
                         onChange={this.handleChange}
                     />
-                    <Form.Input 
+                    <Button
                         fluid
-                        placeholder="Image Link (Optional)"
-                        name="link"
-                        onChange={this.handleChange}
+                        size="medium"
+                        content="Choose File"
+                        labelPosition="left"
+                        icon="file"
+                        onClick={() => this.fileInputRef.current.click()}
                     />
+                    <input
+                        ref={this.fileInputRef}
+                        type="file"
+                        hidden
+                        onChange={this.fileChange}
+                    />
+                    <br/>
                     <Button fluid size='large'>
                         Post
                     </Button>
