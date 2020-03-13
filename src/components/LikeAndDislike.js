@@ -61,14 +61,20 @@ class LikeAndDislike extends React.Component {
         })
         .then(res => res.json())
         .then((res) => {
+            console.log(res)
             if (res.success) {
                 this.loadUserLiked(id)
                 
                 let likeCount = this.state.likeCount
                 let dislikeCount = this.state.dislikeCount
 
+                // if the user has not liked or disliked (new like)
+                if (!this.state.hasLiked && !this.state.hasDisliked) {
+                    likeCount += like_value === 1 ? 1 : 0;
+                    dislikeCount += like_value === 2 ? 1 : 0;
+                }
                 // if the user liked the post
-                if (like_value === 1) {
+                else if (like_value === 1) {
                     likeCount++;
                     dislikeCount--;
                 }
