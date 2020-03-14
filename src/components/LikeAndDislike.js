@@ -108,29 +108,29 @@ class LikeAndDislike extends React.Component {
     }
 
     render() {
-        let likeColor = this.state.hasLiked ? "gray" : "red";
+        let likeColor = this.state.hasLiked ? "blue" : "gray";
         let likeText = this.state.hasLiked ? "Liked" : "Like";
 
-        let dislikeColor = this.state.hasDisliked ? "gray" : "blue";
-        let dislikeText = this.state.hasDisliked ? "Disliked" : "Dislike";
+        let dislikeColor = this.state.hasDisliked ? "blue" : "gray";
+        let dislikeText = this.state.hasDisliked ? "Not Helpful" : "Not Helpful";
 
         return (
             <div>
                 <Button as='div' labelPosition='right' onClick={() => {this.likePost(this.props.post_id, this.state.hasLiked ? 0 : 1)}}>
-                    <Button color={likeColor}>
-                        <Icon name='heart' />
+                    <Button>
+                        <Icon name='thumbs up' color={likeColor} />
                         {likeText}
                     </Button>
-                    <Label as='a' basic color={likeColor} pointing='left'>
+                    <Label as='a' basic style={{"color": "lightred"}} pointing='left'>
                         {this.state.likeCount}
                     </Label>
                 </Button>
                 <Button as='div' labelPosition='right' onClick={() => {this.likePost(this.props.post_id, this.state.hasDisliked ? 0 : 2)}}>
-                    <Button color={dislikeColor}>
-                        <Icon name='thumbs down' />
+                    <Button>
+                        <Icon name='thumbs down' color={dislikeColor} />
                         {dislikeText}
                     </Button>
-                    <Label as='a' basic color={dislikeColor} pointing='left'>
+                    <Label as='a' basic pointing='left'>
                         {this.state.dislikeCount}
                     </Label>
                 </Button>
