@@ -13,6 +13,24 @@ export class MakePostPage extends Component {
 
     handleChange = (e, { name, value }) => this.setState({ [name]: value })
 
+    fileChange = e => {
+        this.setState({ file: e.target.files[0] }, () => {
+            console.log("File chosen --->", this.state.file);
+        });
+    };
+
+    fileUpload = file => {
+        const url = "/some/path/to/post";
+        const formData = new FormData();
+        formData.append("file", file);
+        const config = {
+            headers: {
+            "Content-type": "multipart/form-data"
+            }
+        };
+        //return put(url, formData, config);
+    };
+
     handleSubmit = () => {
         let postData = {"post_class": this.state.class, "title": this.state.title, "content": this.state.content, "image_url": this.state.link};
 
@@ -61,10 +79,11 @@ export class MakePostPage extends Component {
                     <Button
                         fluid
                         size="medium"
-                        content="Choose File"
+                        content="Choose File (Optional)"
                         labelPosition="left"
                         icon="file"
                         onClick={() => this.fileInputRef.current.click()}
+                        type="button"
                     />
                     <input
                         ref={this.fileInputRef}
@@ -73,7 +92,7 @@ export class MakePostPage extends Component {
                         onChange={this.fileChange}
                     />
                     <br/>
-                    <Button fluid size='large'>
+                    <Button fluid size='large' type="submit">
                         Post
                     </Button>
                     </Segment>
