@@ -112,7 +112,7 @@ class LikeAndDislike extends React.Component {
         let likeText = this.state.hasLiked ? "Liked" : "Like";
 
         let dislikeColor = this.state.hasDisliked ? "blue" : "gray";
-        let dislikeText = this.state.hasDisliked ? "Not Helpful" : "Not Helpful";
+        let dislikeText = this.state.hasDisliked ? "Not Useful" : "Not Useful";
 
         return (
             <div>

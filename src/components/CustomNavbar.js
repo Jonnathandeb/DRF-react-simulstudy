@@ -34,7 +34,7 @@ export default class CustomNavbar extends Component {
 						<Input className='icon' placeholder='Search...' action="search"/>
 					</Menu.Item>
 					<Menu.Item position="right">
-						<Button as={NavLink} to="/post" circular icon='plus' color="blue" />
+						<Button as={NavLink} to="/post" circular color="blue">Post</Button>
 					</Menu.Item>
 				</Menu>
 			</Sticky>
