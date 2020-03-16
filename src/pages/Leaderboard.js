@@ -1,33 +1,64 @@
 import React, { Component } from 'react';
 import { Menu, Grid, Segment } from 'semantic-ui-react'
+import { getSession } from "../utils/cookie_manager";
+
+import config from "../api_config.json";
 
 export class LeaderboardPage extends Component {
-	state = { activeItem: 'home' }
+	state = {
+		isLoading: true,
+		activeItem: 'home',
+		classes: []
+	}
 
 	handleItemClick = (e, { name }) => this.setState({ activeItem: name })
 
+	loadClasses() {
+		this.setState({ isLoading: true })
+
+        fetch(`${config.url}/membership_user/`,{
+            headers: new Headers({
+                'Authorization': 'Bearer  ' + getSession().jwt, 
+            }), 
+        })
+        .then(res => res.json())
+        .then((classes) => {
+            this.setState({isLoading: false, classes: classes})
+		})
+	}
+
+	componentDidMount() {
+		this.loadClasses()
+	}
+
 	render() {
 		const { activeItem } = this.state
+
+		let classItems = [<Menu.Item>Loading classes ...</Menu.Item>];
+
+		if (!this.state.isLoading) {
+			classItems = []
+			for (let i = 0; i < this.state.classes.length; i++) {
+				classItems.push(
+					<Menu.Item
+						name={this.state.classes[i].name}
+						active={activeItem === this.state.classes[i].name}
+						onClick={this.handleItemClick}
+					/>
+				)
+			}
+		}
 
 		return (
 			<Grid>
 				<Grid.Column width={3}>
 				<Menu pointing secondary vertical>
 					<Menu.Item
-						name='home'
-						active={activeItem === ''}
+						name='All school'
+						active={activeItem === 'All school'}
 						onClick={this.handleItemClick}
 					/>
-					<Menu.Item
-						name='messages'
-						active={activeItem === 'messages'}
-						onClick={this.handleItemClick}
-					/>
-					<Menu.Item
-						name='friends'
-						active={activeItem === 'friends'}
-						onClick={this.handleItemClick}
-					/>
+					{classItems}
 				</Menu>
 				</Grid.Column>
 
