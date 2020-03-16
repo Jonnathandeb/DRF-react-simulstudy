@@ -15,7 +15,7 @@ export default class AllPostComment extends Component {
 	loadComments() {
         this.setState({ isLoading: true, })
 
-        fetch(`${config.url}/comments_for_post/?post_id=${this.props.id}`,{
+        fetch(`${config.url}/comment_data_for_post/?post_id=${this.props.id}`,{
             headers: new Headers({
                 'Authorization': 'Bearer  ' + getSession().jwt,
             }),
@@ -32,10 +32,10 @@ export default class AllPostComment extends Component {
 
 	render() {
         let comments = [];
+
         if (!this.state.isLoading) {
             for (let i = 0; i < this.state.data.length; i++) {
-				let commentId = this.state.data[i].url.slice(this.state.data[i].url.indexOf("/comments/") + 10, this.state.data[i].url.length - 1);
-				comments.push(<PostComment id={commentId} />)
+				comments.push(<PostComment data={this.state.data[i]} />)
             }
         }
 
