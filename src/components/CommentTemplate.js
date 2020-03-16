@@ -2,10 +2,38 @@ import React, {Component} from 'react'
 import { Comment, Form, Button } from 'semantic-ui-react'
 import { Link } from "react-router-dom";
 import ReadableTime from "./ReadableTime";
+import { getSession } from "../utils/cookie_manager";
+
+import config from "../api_config.json";
 
 export default class CommentTemplate extends Component {
     state = {
         hideReply: true,
+        subcommentContent: null,
+        submittedSubcommentContent: null,
+    }
+
+    handleSubcommentContentChange = (e, { value }) => {
+        this.setState({subcommentContent: value})
+    }
+
+    handleSubcommentSubmit = () => {
+        this.setState({submittedSubcommentContent: this.state.subcommentContent})
+
+        let postData = {"content": this.state.subcommentContent, "comment": `${config.url}/comments/${this.props.data.comment_id}/`}
+
+        fetch(`${config.url}/subcomments/`,{
+            headers: new Headers({
+                'Authorization': 'Bearer  ' + getSession().jwt,
+                'Content-type': 'application/json'
+            }),
+            method: 'POST',
+			body: JSON.stringify(postData),
+        })
+        .then(res => res.json())
+        .then((data) => {
+            console.log(data)
+        })
     }
 
 	render() {
@@ -31,8 +59,8 @@ export default class CommentTemplate extends Component {
                         <a onClick={() => {this.setState((prevState) => {return {hideReply: !prevState.hideReply}})}}>Reply</a>
                     </Comment.Actions>
                     <Form reply hidden={this.state.hideReply}>
-                        <Form.TextArea />
-                        <Button content='Add Reply' labelPosition='left' icon='edit' primary />
+                        <Form.TextArea onChange={this.handleSubcommentContentChange} />
+                        <Button content='Add Reply' labelPosition='left' icon='edit' primary onClick={this.handleSubcommentSubmit} />
                     </Form>
                 </div>
             )
