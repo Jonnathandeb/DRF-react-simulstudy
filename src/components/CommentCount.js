@@ -43,7 +43,7 @@ class CommentCount extends React.Component {
                 <Button as='div' labelPosition='right'>
                     <Button color={"gray"}>
                         <Icon name='comment' />
-                        Comment
+                        Comments
                     </Button>
                     <Label as='a' basic color={"gray"} pointing='left'>
                         {this.state.commentCount}

@@ -151,8 +151,6 @@ export default class PostFullScreen extends Component {
 			cardStyle = {minWidth: "65%"};
 		}
 
-		let isLiked = ["Like", "white"];
-
 		return (
             <Card to={`/post/${post.id}`} centered style={cardStyle}>
                 {cardContent}
