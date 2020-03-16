@@ -1,9 +1,13 @@
 import React, {Component} from 'react'
-import { Comment } from 'semantic-ui-react'
+import { Comment, Form, Button } from 'semantic-ui-react'
 import { Link } from "react-router-dom";
 import ReadableTime from "./ReadableTime";
 
 export default class CommentTemplate extends Component {
+    state = {
+        hideReply: true,
+    }
+
 	render() {
         let subCommentGroup = null;
         let commentActions = null;
@@ -22,9 +26,15 @@ export default class CommentTemplate extends Component {
 
             commentActions =
             (
-                <Comment.Actions>
-                    <a>Reply</a>
-                </Comment.Actions>
+                <div>
+                    <Comment.Actions>
+                        <a onClick={() => {this.setState((prevState) => {return {hideReply: !prevState.hideReply}})}}>Reply</a>
+                    </Comment.Actions>
+                    <Form reply hidden={this.state.hideReply}>
+                        <Form.TextArea />
+                        <Button content='Add Reply' labelPosition='left' icon='edit' primary />
+                    </Form>
+                </div>
             )
         }
 
