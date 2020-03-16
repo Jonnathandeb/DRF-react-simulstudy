@@ -21,35 +21,8 @@ export default class ClassesDropdown extends Component {
         })
         .then(res => res.json())
         .then((classes) => {
-            let classLinks = [];
-
-            // switches all classes data to the link of the class
-            if (Array.isArray(classes)) {
-                classes.forEach((e) => {
-                    classLinks.push(e["student_class"]);
-                })
-            }
-
-            for (let i = 0; i < classLinks.length; i++) {
-                this.loadClassData(classLinks[i]).then((data) => {
-                    let joined = this.state.data.concat(data);
-                    this.setState({ data: joined })
-                });
-            }
-
-            this.setState((prevState) => {
-                return {isLoading: false, data: prevState.data}
-            })
+            this.setState({isLoading: false, data: classes})
 		})
-    }
-
-    loadClassData(url) {
-        return fetch(url, {
-            headers: new Headers({
-                'Authorization': 'Bearer  ' + getSession().jwt, 
-            }), 
-        })
-        .then(res => res.json())
     }
     
     componentDidMount() {
@@ -65,11 +38,10 @@ export default class ClassesDropdown extends Component {
                 </NavLink>
             </Dropdown.Item>];
             for (let i = 0; i < this.state.data.length; i++) {
-                let classUrl = this.state.data[i].url
-                classUrl = classUrl.slice(classUrl.indexOf("/classes/") + 9);
+                let classId = this.state.data[i].id
 
                 dropdownArr.push(<Dropdown.Item key={i + 1}>
-                    <NavLink to={`/feed/${classUrl}`}>
+                    <NavLink to={`/feed/${classId}`}>
                         {this.state.data[i].name}
                     </NavLink>
                 </Dropdown.Item>)

@@ -20,35 +20,8 @@ export default class ClassesDropdown extends Component {
         })
         .then(res => res.json())
         .then((classes) => {
-            let classLinks = [];
-
-            // switches all classes data to the link of the class
-            if (Array.isArray(classes)) {
-                classes.forEach((e) => {
-                    classLinks.push(e["student_class"]);
-                })
-            }
-
-            for (let i = 0; i < classLinks.length; i++) {
-                this.loadClassData(classLinks[i]).then((data) => {
-                    let joined = this.state.data.concat(data);
-                    this.setState({ data: joined })
-                });
-            }
-
-            this.setState((prevState) => {
-                return {isLoading: false, data: prevState.data}
-            })
+            this.setState({isLoading: false, data: classes})
 		})
-    }
-
-    loadClassData(url) {
-        return fetch(url, {
-            headers: new Headers({
-                'Authorization': 'Bearer  ' + getSession().jwt, 
-            }), 
-        })
-        .then(res => res.json())
     }
     
     componentDidMount() {
@@ -60,8 +33,7 @@ export default class ClassesDropdown extends Component {
         if (!this.state.isLoading) {
             dropdownArr = [];
             for (let i = 0; i < this.state.data.length; i++) {
-                let classUrl = this.state.data[i].url
-
+                let classUrl = `${config.url}/classes/${this.state.data[i].id}/`
                 dropdownArr.push({key: i, text: this.state.data[i].name, value: classUrl})
             }
         }
