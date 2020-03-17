@@ -1,17 +1,19 @@
 import React, { Component } from 'react';
 import { Menu, Grid, Segment } from 'semantic-ui-react'
 import { getSession } from "../utils/cookie_manager";
+import LeaderboardTable from "../components/LeaderboardTable"
 
 import config from "../api_config.json";
 
 export class LeaderboardPage extends Component {
 	state = {
 		isLoading: true,
-		activeItem: 'home',
+		activeItem: 'All school',
+		activeId: 0,
 		classes: []
 	}
 
-	handleItemClick = (e, { name }) => this.setState({ activeItem: name })
+	handleItemClick = (e, { name }) => this.setState({ activeItem: name, activeId: e.target.id })
 
 	loadClasses() {
 		this.setState({ isLoading: true })
@@ -41,6 +43,7 @@ export class LeaderboardPage extends Component {
 			for (let i = 0; i < this.state.classes.length; i++) {
 				classItems.push(
 					<Menu.Item
+						id={this.state.classes[i].id}
 						name={this.state.classes[i].name}
 						active={activeItem === this.state.classes[i].name}
 						onClick={this.handleItemClick}
@@ -54,6 +57,7 @@ export class LeaderboardPage extends Component {
 				<Grid.Column width={3}>
 				<Menu pointing secondary vertical>
 					<Menu.Item
+						id="0"
 						name='All school'
 						active={activeItem === 'All school'}
 						onClick={this.handleItemClick}
@@ -63,7 +67,7 @@ export class LeaderboardPage extends Component {
 				</Grid.Column>
 
 				<Grid.Column width={13}>
-					
+					<LeaderboardTable id={this.state.activeId} />
 				</Grid.Column>
 			</Grid>
 		)
